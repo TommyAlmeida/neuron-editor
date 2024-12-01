@@ -4,6 +4,7 @@ export type GeometryType = 'box' | 'sphere' | 'cylinder' | 'plane';
 export type MaterialType = 'standard' | 'basic' | 'phong' | 'physical';
 export type LightType = 'ambient' | 'point' | 'spot';
 export type Theme = 'light' | 'dark';
+export type SaveType = 'file' | 'cache';
 
 export interface SceneItem {
   id: string;
@@ -80,6 +81,6 @@ export interface EditorState {
   deleteGroup: (id: string) => void;
   moveItem: (itemId: string, parentId: string | null) => void;
 
-  save: () => void;
-  load: () => void;
+  save: (type: SaveType) => void;
+  load: (type: SaveType) => void;
 }

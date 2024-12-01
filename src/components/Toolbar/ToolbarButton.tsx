@@ -1,3 +1,5 @@
+import { Tooltip } from "../UI/Tooltip";
+
 interface ToolbarButtonProps {
   icon: React.ReactNode;
   onClick: () => void;
@@ -7,16 +9,18 @@ interface ToolbarButtonProps {
 
 export function ToolbarButton({ icon, onClick, title, active }: ToolbarButtonProps) {
   return (
-    <button
-      onClick={onClick}
-      className={`flex justify-center p-2 rounded-lg transition-colors ${
-        active
-          ? 'bg-neutral-800 border border-blue-500'
-          : 'hover:bg-neutral-800 '
-      }`}
-      title={title}
-    >
-      {icon}
-    </button>
+    <Tooltip content={title} position="right">
+      <button
+        onClick={onClick}
+        className={`flex justify-center p-2 rounded-lg transition-colors group ${
+          active
+            ? 'bg-neutral-800 border border-blue-500'
+            : 'hover:bg-neutral-800 '
+        }`}
+        title={title}
+      >
+        {icon}
+      </button>
+    </Tooltip>
   );
 }

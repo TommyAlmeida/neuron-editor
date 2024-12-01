@@ -13,7 +13,7 @@ import {
   Scale3D,
   Cone,
   Square,
-  Loader,
+  Upload,
 } from 'lucide-react';
 import { useStore } from '../../store/editorStore';
 import { GeometryType, LightType } from '../../types/editor';
@@ -45,16 +45,16 @@ export function Toolbar() {
 
         <ToolbarDivider />
 
-        <ToolbarButton icon={<Box className={baseIconClass} />} onClick={() => { addShape('box') }} title={'Add Cube'} />
+        <ToolbarButton icon={<Box className={baseIconClass} />} onClick={() => { addShape('box') }} title={'Cube'} />
         <ToolbarButton icon={<Circle className={baseIconClass} />} onClick={() => { addShape('sphere') }} title={'Add Sphere'} />
-        <ToolbarButton icon={<Square className={baseIconClass} />} onClick={() => { addShape('plane') }} title={'Add Plane'} />
-        <ToolbarButton icon={<Cylinder className={baseIconClass} />} onClick={() => { addShape('cylinder') }} title={'Add Cylinder'} />
+        <ToolbarButton icon={<Square className={baseIconClass} />} onClick={() => { addShape('plane') }} title={'Plane'} />
+        <ToolbarButton icon={<Cylinder className={baseIconClass} />} onClick={() => { addShape('cylinder') }} title={'Cylinder'} />
 
         <ToolbarDivider />
 
-        <ToolbarButton icon={<Sun className={baseIconClass} />} onClick={() => { handleAddLight('ambient') }} title={'Add Ambient Light'} />
-        <ToolbarButton icon={<Lightbulb className={baseIconClass} />} onClick={() => { handleAddLight('point') }} title={'Add Point Light'} />
-        <ToolbarButton icon={<Cone className={`${baseIconClass} -rotate-45`} />} onClick={() => { handleAddLight("spot") }} title={'Add Spot Light'} />
+        <ToolbarButton icon={<Sun className={baseIconClass} />} onClick={() => { handleAddLight('ambient') }} title={'Ambient Light'} />
+        <ToolbarButton icon={<Lightbulb className={baseIconClass} />} onClick={() => { handleAddLight('point') }} title={'Point Light'} />
+        <ToolbarButton icon={<Cone className={`${baseIconClass} -rotate-45`} />} onClick={() => { handleAddLight("spot") }} title={'Spot Light'} />
 
         <ToolbarDivider />
 
@@ -69,8 +69,8 @@ export function Toolbar() {
         <ToolbarDivider />
 
         <ToolbarButton icon={<SettingsIcon className={baseIconClass} />} onClick={() => { setSettingsOpen(!isSettingsOpen) }} title={'Settings'} />
-        <ToolbarButton icon={<Save className={baseIconClass} />} onClick={() => { save() }} title={'Save'} />
-        <ToolbarButton icon={<Loader className={baseIconClass} />} onClick={() => { load() }} title={'Load'} />
+        <ToolbarButton icon={<Save className={baseIconClass} />} onClick={() => { save("cache") }} title={'Save'} />
+        <ToolbarButton icon={<Upload className={baseIconClass} />} onClick={() => { load("cache") }} title={'Load'} />
       </div>
       <SettingsPanel isOpen={isSettingsOpen} />
     </>

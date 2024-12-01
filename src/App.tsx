@@ -9,11 +9,18 @@ export default function App() {
 
   return (
     <div className={`w-full h-screen ${settings.theme === 'dark' ? 'dark' : ''}`}>
-      <Canvas shadows>
+      <Canvas 
+        shadows
+        dpr={[1, 1.5]}
+        gl={{ preserveDrawingBuffer: true }}
+        camera={{ position: [5, 5, 5], fov: 75 }}
+      >
         <Scene />
       </Canvas>
+   
+        <Sidebar />
+      
       <Toolbar />
-      <Sidebar />
     </div>
   );
 }

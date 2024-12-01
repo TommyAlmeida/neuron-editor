@@ -14,6 +14,7 @@ export function Lights() {
       {lights.map((light) => {
         const handleTransform = () => {
           const lightObj = lightRefs.current[light.id];
+
           if (lightObj) {
             const position = lightObj.position.toArray();
             const rotation = lightObj.rotation.toArray();
@@ -30,7 +31,6 @@ export function Lights() {
                   key={light.id}
                   intensity={light.intensity}
                   color={light.color}
-                  rotation={light.rotation}
                 />
               );
             case 'point':
@@ -39,7 +39,7 @@ export function Lights() {
                   ref={(ref) => {
                     lightRefs.current[light.id] = ref;
                   }}
-                  rotation={light.rotation}
+                  
                   position={light.position}
                   intensity={light.intensity}
                   color={light.color}
@@ -70,7 +70,7 @@ export function Lights() {
             <LightGizmo light={light} selected={selectedId === light.id} />
             {selectedId === light.id && (
               <TransformControls
-                //@ts-expect-error ddd
+                //@ts-expect-error NO CLUE, YET?
                 object={lightRefs.current[light.id]}
                 mode={gizmoMode}
                 onObjectChange={handleTransform}

@@ -40,33 +40,33 @@ export function SceneTreeGroup({ group, items, selected }: SceneTreeGroupProps) 
   };
 
   return (
-    <div ref={setNodeRef} style={style} className="select-none">
+    <div ref={setNodeRef} style={style} className="select-none text-sm">
       <div
         className={`flex items-center p-2 rounded-lg ${selected
-            ? 'bg-blue-50 dark:bg-blue-900 text-blue-600 dark:text-blue-300'
-            : 'hover:bg-gray-100 dark:hover:bg-gray-700'
+            ? 'bg-blue-900 text-blue-300'
+            : 'hover:bg-[#242627]'
           }`}
         {...attributes}
         {...listeners}
       >
         <button
-          className="p-1 hover:bg-gray-200 dark:hover:bg-gray-600 rounded mr-1"
+          className="p-1 hover:bg-[#242627] rounded mr-1"
           onClick={toggleGroup}
         >
           {isOpen ? (
-            <ChevronDown className="w-4 h-4" />
+            <ChevronDown className="w-4 h-4 text-gray-400" />
           ) : (
-            <ChevronRight className="w-4 h-4" />
+            <ChevronRight className="w-4 h-4 text-gray-400" />
           )}
         </button>
 
         <div className="flex items-center flex-1 cursor-move">
           {isOpen ? (
-            <FolderOpen className="w-4 h-4 mr-2 text-yellow-500" />
+            <FolderOpen className="w-4 h-4 mr-2 text-gray-400" />
           ) : (
-            <Folder className="w-4 h-4 mr-2 text-yellow-500" />
+            <Folder className="w-4 h-4 mr-2 text-gray-400" />
           )}
-          <span>{group.name}</span>
+          <span className='text-gray-400'>{group.name}</span>
         </div>
 
         <ItemMenu item={group} />

@@ -68,7 +68,7 @@ export function ItemMenu({ item }: ItemMenuProps) {
     return (
         <Menu as="div" className="relative inline-block text-left">
             <MenuButton
-                className="p-1 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-md"
+                className="p-1 text-gray-400 rounded-md"
                 onClick={(e: { stopPropagation: () => void; }) => e.stopPropagation()}
             >
                 <MoreVertical className="w-4 h-4" />
@@ -76,9 +76,9 @@ export function ItemMenu({ item }: ItemMenuProps) {
 
             <MenuItems className="absolute right-0 z-10 mt-1 w-48 origin-top-right rounded-md bg-white dark:bg-gray-800 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                 <MenuItem>
-                    {({ active }) => (
+                    {({ disabled }) => (
                         <button
-                            className={`${active ? 'bg-gray-100 dark:bg-gray-700' : ''
+                            className={`${disabled ? 'bg-gray-100 dark:bg-gray-700' : ''
                                 } flex w-full items-center px-3 py-2 text-sm`}
                             onClick={() => setIsRenaming(true)}
                         >

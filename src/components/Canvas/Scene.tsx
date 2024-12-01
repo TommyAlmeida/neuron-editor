@@ -18,27 +18,26 @@ export function Scene() {
     <>
       <PerspectiveCamera makeDefault position={[5, 5, 5]} />
       <OrbitControls makeDefault />
-      <color attach="background" args={['#0f0f0f']} />
 
       <Lights />
-
       {settings.gridEnabled && (
         <Grid
-          infiniteGrid
-          fadeDistance={50}
-          fadeStrength={5}
-          cellSize={settings.gridSize}
-          sectionSize={settings.gridSize * 5}
-          cellThickness={0.5}
-          sectionThickness={1}
-          cellColor={settings.theme === 'dark' ? '#404040' : '#cccccc'}
-          sectionColor={settings.theme === 'dark' ? '#606060' : '#999999'}
+        infiniteGrid
+        fadeDistance={50}
+        fadeStrength={5}
+        cellSize={settings.gridSize}
+        sectionSize={settings.gridSize * 5}
+        cellThickness={0.5}
+        sectionThickness={1}
+        cellColor={settings.theme === 'dark' ? '#404040' : '#cccccc'}
+        sectionColor={settings.theme === 'dark' ? '#606060' : '#999999'}
         />
       )}
+      
+      <Environment preset="forest" background={false} blur={0.5} />
 
       <Model />
-
-      <Environment preset="forest" background={false} blur={0.5} />
+      <color attach="background" args={['#242626']} />
     </>
   );
 }

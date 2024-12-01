@@ -1,7 +1,8 @@
 import { useRef, useEffect } from 'react';
-import { Sphere, Line, Html } from '@react-three/drei';
+import { Line, Html } from '@react-three/drei';
 import { Vector3 } from 'three';
 import { Light } from '../../types/editor';
+import { Sun, Lightbulb, Disc } from 'lucide-react';
 
 interface LightGizmoProps {
   light: Light;
@@ -21,42 +22,52 @@ export function LightGizmo({ light, selected }: LightGizmoProps) {
     }
   }, [light.position, light.type]);
 
-  const getGizmoSize = () => {
+  const renderIcon = () => {
     switch (light.type) {
       case 'ambient':
-        return 0.5;
+        return <Disc size={32} color={light.color} />;
       case 'point':
-        return 0.3;
+        return <Lightbulb size={32} color={light.color} />;
       case 'directional':
-        return 0.4;
+        return <Sun size={32} color={light.color} />;
       default:
-        return 0.3;
+        return null;
     }
   };
 
   return (
     <group>
-      <Sphere position={light.position} args={[getGizmoSize()]}>
-        <meshBasicMaterial
-          color={light.color}
-          transparent
-          opacity={selected ? 0.8 : 0.3}
-          wireframe={selected}
-        />
-      </Sphere>
+      {/* Icon */}
+      <Html position={light.position} center>
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            backgroundColor: selected ? 'rgba(255, 255, 255, 0.8)' : 'rgba(0, 0, 0, 0.5)',
+            borderRadius: '50%',
+            padding: '0.5rem',
+            width: '40px',
+            height: '40px',
+            boxShadow: selected ? '0px 0px 10px rgba(255, 255, 255, 0.8)' : 'none',
+          }}
+        >
+          {renderIcon()}
+        </div>
+      </Html>
+
+      {/* Directional light line */}
       {light.type === 'directional' && (
         <>
           <Line
             ref={lineRef}
-            points={[light.position, [light.position[0], light.position[1] - 2, light.position[2]]]}
+            points={[
+              light.position,
+              [light.position[0], light.position[1] - 2, light.position[2]],
+            ]}
             color={light.color}
             lineWidth={2}
           />
-          <Html position={light.position}>
-            <div className="bg-black/50 text-white px-2 py-1 rounded text-sm whitespace-nowrap">
-              {light.name}
-            </div>
-          </Html>
         </>
       )}
     </group>

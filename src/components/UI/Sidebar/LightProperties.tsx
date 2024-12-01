@@ -61,12 +61,15 @@ export function LightProperties({ light, onUpdate }: LightPropertiesProps) {
         <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">
           Color
         </label>
-        <input
-          type="color"
-          value={light.color}
-          onChange={(e) => onUpdate({ color: e.target.value })}
-          className="block w-full h-10 px-1 py-1 rounded-md border border-gray-300 dark:border-gray-600"
-        />
+        <div className="md:relative h-14 fixed left-4 right-4 bottom-6 z-40 md:inset-0 form-control border border-color rounded-md overflow-hidden">
+          <input
+            type="color"
+            value={light.color}
+            defaultValue={light.color}
+            onChange={(e) => onUpdate({ color: e.target.value })}
+            className="absolute top-1/2 transform -translate-y-1/2 w-7 h-7 rounded-full border-none left-4 cursor-pointer"
+          />
+        </div>
       </div>
     </div>
   );

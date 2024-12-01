@@ -8,23 +8,46 @@ import {
   Camera,
   Settings as SettingsIcon,
   Circle,
-  LightbulbOff,
   Move3D,
   Rotate3D,
   Scale3D,
+  Cone,
+  LampDesk,
 } from 'lucide-react';
 import { useStore } from '../../store/editorStore';
 import { GeometryType, LightType } from '../../types/editor';
 import { SettingsPanel } from './SettingsPanel';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { ToolbarButton } from '../Toolbar/ToolbarButton';
 import { ToolbarDivider } from '../Toolbar/ToolbarDivider';
 
 export function Toolbar() {
   const { setGeometry, addLight, settings, updateSettings, setGizmoMode, gizmoMode } = useStore();
-
   const [isSettingsOpen, setSettingsOpen] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const startPosition = useRef({ x: 0, y: 0 });
+  const toolbarRef = useRef<HTMLDivElement>(null);
 
+
+  const handleMouseDown = (e: React.MouseEvent) => {
+    setIsDragging(true);
+    startPosition.current = { x: e.clientX - position.x, y: e.clientY - position.y };
+  };
+
+  const handleMouseMove = (e: MouseEvent) => {
+    if (isDragging) {
+      setPosition({
+        x: e.clientX - startPosition.current.x,
+        y: e.clientY - startPosition.current.y,
+      });
+    }
+  };
+
+  const handleMouseUp = () => {
+    setIsDragging(false);
+  };
+  
   const addShape = (type: GeometryType) => {
     setGeometry(type);
   };
@@ -33,15 +56,15 @@ export function Toolbar() {
     addLight(type);
   };
 
-  const baseIconClass = "w-6 h-6 text-gray-700 dark:text-gray-200";
+  const baseIconClass = "w-5 h-5 align-center items-center text-gray-200";
 
   return (
     <>
-      <div className="absolute top-4 left-1/2 transform -translate-x-1/2 bg-white dark:bg-gray-800 rounded-lg shadow-lg p-2 flex space-x-2">
+      <div className="absolute top-2 left-2 bg-neutral-900 rounded-md shadow-lg p-1.5 flex flex-col z-50">
         <ToolbarButton active={gizmoMode === 'translate'} icon={<Move3D className={baseIconClass} />} onClick={() => { setGizmoMode('translate') }} title={'Translate'} />
         <ToolbarButton active={gizmoMode === 'rotate'} icon={<Rotate3D className={baseIconClass} />} onClick={() => { setGizmoMode('rotate') }} title={'Rotate'} />
         <ToolbarButton active={gizmoMode === 'scale'} icon={<Scale3D className={baseIconClass} />} onClick={() => { setGizmoMode('scale') }} title={'Scale'} />
-        
+
         <ToolbarDivider />
 
         <ToolbarButton icon={<Box className={baseIconClass} />} onClick={() => { addShape('box') }} title={'Add Cube'} />
@@ -52,8 +75,8 @@ export function Toolbar() {
 
         <ToolbarButton icon={<Sun className={baseIconClass} />} onClick={() => { handleAddLight('ambient') }} title={'Add Ambient Light'} />
         <ToolbarButton icon={<Lightbulb className={baseIconClass} />} onClick={() => { handleAddLight('point') }} title={'Add Point Light'} />
-        <ToolbarButton icon={<LightbulbOff className={baseIconClass} />} onClick={() => { handleAddLight("spot") }} title={'Add Spot Light'} />
-        <ToolbarButton icon={<LightbulbOff className={baseIconClass} />} onClick={() => { handleAddLight("directional") }} title={'Add Directional Light'} />
+        <ToolbarButton icon={<LampDesk className={baseIconClass} />} onClick={() => { handleAddLight("spot") }} title={'Add Spot Light'} />
+        <ToolbarButton icon={<Cone className={`${baseIconClass} -rotate-45`} />} onClick={() => { handleAddLight("directional") }} title={'Add Directional Light'} />
 
         <ToolbarDivider />
 

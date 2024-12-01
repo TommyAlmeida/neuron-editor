@@ -12,6 +12,10 @@ import {
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
+import {
+  restrictToVerticalAxis,
+  restrictToParentElement
+} from '@dnd-kit/modifiers';
 import { useStore } from '../../../store/editorStore';
 import { FolderPlus } from 'lucide-react';
 import { useCallback } from 'react';
@@ -61,13 +65,14 @@ export function SceneTree() {
       sensors={sensors}
       collisionDetection={closestCenter}
       onDragEnd={handleDragEnd}
+      modifiers={[restrictToVerticalAxis, restrictToParentElement]}
     >
-      <div className="space-y-2 p-4">
+      <div className="space-y-2">
         <div className="flex justify-between items-center mb-4">
-          <h2 className="font-medium text-lg">Scene Hierarchy</h2>
+          <h2 className="font-medium text-md text-white">Scene Hierarchy</h2>
           <button
             onClick={addGroup}
-            className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
+            className="p-1.5 bg-neutral-800 text-white rounded-lg transition-colors"
             title="Add Group"
           >
             <FolderPlus className="w-5 h-5" />

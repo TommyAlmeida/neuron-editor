@@ -1,38 +1,17 @@
+// components/Canvas/Model.tsx
 import { useEffect, useRef } from 'react';
-import { Box, Sphere, Cylinder, TransformControls } from '@react-three/drei';
-import { useStore } from '../../store/editorStore';
-import { ThreeEvent } from '@react-three/fiber';
 import { Object3D as Object3DType } from '../../types/editor';
-import { Mesh } from 'three';
+import { useStore } from '../../store/editorStore';
+import { TransformControls } from '@react-three/drei';
+import { Mesh, Group } from 'three';
+import { ThreeEvent } from '@react-three/fiber';
+import { Vector3D } from '../../types/math';
 
 function Geometry({ object }: { object: Object3DType }) {
-  const ref = useRef<Mesh>(null);
-  const selectObject = useStore((state) => state.selectObject);
-  const selectedId = useStore((state) => state.selectedId);
-  const updateObject = useStore((state) => state.updateObject);
-  const { gizmoMode } = useStore((state) => state);
+  const meshRef = useRef<Mesh>(null);
+  const groupRef = useRef<Group>(null);
 
-  const getMaterial = () => {
-    const materialProps = {
-      color: object.material.color,
-      metalness: object.material.metalness,
-      roughness: object.material.roughness,
-      wireframe: object.material.wireframe,
-      transparent: object.material.transparent,
-      opacity: object.material.opacity,
-    };
-
-    switch (object.material.type) {
-      case 'basic':
-        return <meshBasicMaterial {...materialProps} />;
-      case 'phong':
-        return <meshPhongMaterial {...materialProps} />;
-      case 'physical':
-        return <meshPhysicalMaterial {...materialProps} />;
-      default:
-        return <meshStandardMaterial {...materialProps} />;
-    }
-  };
+  const { selectObject, selectedId, updateObject, gizmoMode } = useStore();
 
   const handleClick = (e: ThreeEvent<MouseEvent>) => {
     e.stopPropagation();
@@ -40,46 +19,48 @@ function Geometry({ object }: { object: Object3DType }) {
   };
 
   const handleTransform = () => {
-    if (ref.current) {
-      const position = ref.current.position.toArray();
-      const rotation = ref.current.rotation.toArray().slice(0, 3);
-      const scale = ref.current.scale.toArray();
-      // @ts-expect-error dunno
-      updateObject(object.id, { position, rotation, scale });
+    if (meshRef.current) {
+      const position = meshRef.current.position.toArray();
+      const rotation = meshRef.current.rotation.toArray().slice(0, 3);
+      const scale = meshRef.current.scale.toArray();
+      updateObject(object.id, {
+        position: position as Vector3D,
+        rotation: rotation as Vector3D,
+        scale: scale as Vector3D,
+      });
     }
   };
 
-  const props = {
-    position: object.position,
-    rotation: object.rotation,
-    scale: object.scale,
-    onClick: handleClick,
-  };
-
   return (
-    <>
-      <>
-        {object.type === 'box' && (
-          <Box receiveShadow ref={ref} {...props}>
-            {getMaterial()}
-          </Box>
-        )}
-        {object.type === 'sphere' && (
-          <Sphere receiveShadow ref={ref} {...props}>
-            {getMaterial()}
-          </Sphere>
-        )}
-        {object.type === 'cylinder' && (
-          <Cylinder receiveShadow ref={ref} {...props}>
-            {getMaterial()}
-          </Cylinder>
-        )}
-        {selectedId === object.id && (
-          // @ts-expect-error dunno
-          <TransformControls mode={gizmoMode} object={ref} onObjectChange={handleTransform} />
-        )}
-      </>
-    </>
+    <group ref={groupRef} onClick={handleClick}>
+      <mesh
+        ref={meshRef}
+        position={object.position}
+        rotation={object.rotation}
+        scale={object.scale}
+        userData={{ id: object.id }}
+      >
+        {object.type === 'box' && <boxGeometry />}
+        {object.type === 'sphere' && <sphereGeometry />}
+        {object.type === 'cylinder' && <cylinderGeometry />}
+        <meshStandardMaterial
+          color={object.material.color}
+          metalness={object.material.metalness}
+          roughness={object.material.roughness}
+          wireframe={object.material.wireframe}
+          transparent={object.material.transparent}
+          opacity={object.material.opacity}
+        />
+      </mesh>
+      {selectedId === object.id && (
+        <TransformControls
+        // @ts-ignore
+          object={meshRef.current}
+          mode={gizmoMode}
+          onObjectChange={handleTransform}
+        />
+      )}
+    </group>
   );
 }
 

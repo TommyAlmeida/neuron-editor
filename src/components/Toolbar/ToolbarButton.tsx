@@ -9,10 +9,10 @@ export function ToolbarButton({ icon, onClick, title, active }: ToolbarButtonPro
   return (
     <button
       onClick={onClick}
-      className={`p-2 rounded-lg transition-colors ${
+      className={`flex justify-center p-2 rounded-lg transition-colors ${
         active
-          ? 'bg-blue-100 dark:bg-blue-900'
-          : 'hover:bg-gray-100 dark:hover:bg-gray-700'
+          ? 'bg-neutral-800 border border-blue-500'
+          : 'hover:bg-neutral-800 '
       }`}
       title={title}
     >

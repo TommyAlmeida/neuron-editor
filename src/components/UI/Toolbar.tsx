@@ -13,6 +13,7 @@ import {
   Scale3D,
   Cone,
   Square,
+  Loader,
 } from 'lucide-react';
 import { useStore } from '../../store/editorStore';
 import { GeometryType, LightType } from '../../types/editor';
@@ -22,7 +23,7 @@ import { ToolbarButton } from '../Toolbar/ToolbarButton';
 import { ToolbarDivider } from '../Toolbar/ToolbarDivider';
 
 export function Toolbar() {
-  const { setGeometry, addLight, settings, updateSettings, setGizmoMode, gizmoMode } = useStore();
+  const { setGeometry, addLight, settings, updateSettings, setGizmoMode, gizmoMode, save, load } = useStore();
   const [isSettingsOpen, setSettingsOpen] = useState(false);
 
   const addShape = (type: GeometryType) => {
@@ -68,7 +69,8 @@ export function Toolbar() {
         <ToolbarDivider />
 
         <ToolbarButton icon={<SettingsIcon className={baseIconClass} />} onClick={() => { setSettingsOpen(!isSettingsOpen) }} title={'Settings'} />
-        <ToolbarButton icon={<Save className={baseIconClass} />} onClick={() => { }} title={'Save'} />
+        <ToolbarButton icon={<Save className={baseIconClass} />} onClick={() => { save() }} title={'Save'} />
+        <ToolbarButton icon={<Loader className={baseIconClass} />} onClick={() => { load() }} title={'Load'} />
       </div>
       <SettingsPanel isOpen={isSettingsOpen} />
     </>

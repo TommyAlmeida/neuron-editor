@@ -9,7 +9,7 @@ const DEFAULT_SETTINGS: EditorSettings = {
   snapValue: 1,
 };
 
-export const useStore = create<EditorState>((set) => ({
+export const useStore = create<EditorState>((set, get) => ({
   objects: [],
   lights: [],
   gizmoMode: 'translate',
@@ -138,4 +138,36 @@ export const useStore = create<EditorState>((set) => ({
       lights: updatedLights,
     };
   }),
+
+  save: () => {
+    const state = get();
+    const stateToSave = {
+      objects: state.objects,
+      lights: state.lights,
+      settings: state.settings,
+      groups: state.groups,
+    };
+
+    console.log('stateToSave', stateToSave);
+    localStorage.setItem('editorState', JSON.stringify(stateToSave));
+  },
+
+  load: () => {
+    const savedState = localStorage.getItem('editorState');
+    
+    if (savedState) {
+      const parsedState = JSON.parse(savedState);
+
+      set({
+        objects: parsedState.objects || [],
+        lights: parsedState.lights || [],
+        settings: parsedState.settings || DEFAULT_SETTINGS,
+        groups: parsedState.groups || [],
+      });
+
+      console.log('Loaded state:', parsedState);
+    } else {
+      console.warn('No saved state found in localStorage.');
+    }
+  },
 }));

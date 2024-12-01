@@ -2,7 +2,7 @@
 import { useEffect, useRef } from 'react';
 import { MaterialType, Object3D as Object3DType } from '../../types/editor';
 import { useStore } from '../../store/editorStore';
-import { Plane, TransformControls } from '@react-three/drei';
+import { TransformControls } from '@react-three/drei';
 import { Mesh, Group } from 'three';
 import { ThreeEvent } from '@react-three/fiber';
 import { Vector3D } from '../../types/math';

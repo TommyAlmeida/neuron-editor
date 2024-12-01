@@ -1,5 +1,5 @@
 import { useRef, useEffect } from 'react';
-import { Line, Html, useDepthBuffer } from '@react-three/drei';
+import { Html } from '@react-three/drei';
 import { Vector3 } from 'three';
 import { Light } from '../../types/editor';
 import { Lightbulb, Disc, Cone } from 'lucide-react';
@@ -55,20 +55,6 @@ export function LightGizmo({ light, selected }: LightGizmoProps) {
           {renderIcon()}
         </div>
       </Html>
-
-      {light.type === 'spot' && (
-        <>
-          <Line
-            ref={lineRef}
-            points={[
-              light.angle,
-              [light.angle + Math.PI /2, light.position[1] - 2, light.position[2]],
-            ]}
-            color={light.color}
-            lineWidth={2}
-          />
-        </>
-      )}
     </group>
   );
 }

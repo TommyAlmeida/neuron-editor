@@ -9,7 +9,7 @@ export function Lights() {
   const { lights, selectedId, updateLight, gizmoMode } = useStore();
   const lightRefs = useRef<{ [key: string]: Object3D | null }>({});
 
-  const depthBuffer = useDepthBuffer({ size: 2256 })
+  const depthBuffer = useDepthBuffer({ size: 256 });
 
   return (
     <>
@@ -60,7 +60,8 @@ export function Lights() {
                   penumbra={0.5}
                   volumetric={true}
                   color={light.color}
-                  debug
+                  depthBuffer={depthBuffer}
+                  debug={selectedId === light.id}
                 />
               );
             default:

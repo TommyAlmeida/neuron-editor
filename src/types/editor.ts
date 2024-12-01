@@ -79,4 +79,7 @@ export interface EditorState {
   updateGroup: (id: string, updates: Partial<Group>) => void;
   deleteGroup: (id: string) => void;
   moveItem: (itemId: string, parentId: string | null) => void;
+
+  save: () => void;
+  load: () => void;
 }

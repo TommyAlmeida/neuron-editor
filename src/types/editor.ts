@@ -1,3 +1,5 @@
+import { Vector3D } from "./math";
+
 export type GeometryType = 'box' | 'sphere' | 'cylinder';
 export type LightType = 'ambient' | 'directional' | 'point' | 'spot';
 export type Theme = 'light' | 'dark';
@@ -26,15 +28,16 @@ export interface Light extends SceneItem {
   name: string;
   intensity: number;
   color: string;
-  position: [number, number, number];
+  position: Vector3D;
+  rotation: Vector3D;
 }
 
 export interface Object3D extends SceneItem {
   type: 'box' | 'sphere' | 'cylinder';
   name: string;
-  position: [number, number, number];
-  rotation: [number, number, number];
-  scale: [number, number, number];
+  position: Vector3D;
+  rotation: Vector3D;
+  scale: Vector3D;
   color: string;
   material: {
     type: 'standard' | 'basic' | 'phong' | 'normal' | 'physical';
@@ -47,7 +50,7 @@ export interface Object3D extends SceneItem {
   };
 }
 
-export type GizmoMode = 'none' | 'translate' | 'rotate' | 'scale';
+export type GizmoMode = 'translate' | 'rotate' | 'scale';
 
 export interface EditorState {
   objects: Object3D[];

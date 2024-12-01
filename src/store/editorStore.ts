@@ -30,7 +30,7 @@ export const useStore = create<EditorState>((set) => ({
       rotation: [0, 0, 0],
       scale: [1, 1, 1],
       color: '#4f46e5',
-      parentId: null, // Add this
+      parentId: null,
       material: {
         type: 'standard',
         metalness: 0.5,
@@ -53,7 +53,8 @@ export const useStore = create<EditorState>((set) => ({
       intensity: 1,
       color: '#ffffff',
       position: [5, 5, 5],
-      parentId: null, // Add this
+      rotation: [0, 0, 0],
+      parentId: null,
     };
     return { lights: [...state.lights, newLight] };
   }),

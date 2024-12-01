@@ -2,8 +2,8 @@ import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { Object3D, Light } from '../../../types/editor';
 import { useStore } from '../../../store/editorStore';
-import { ItemMenu } from './ItemMenu';
 import { Cuboid, Lightbulb } from 'lucide-react';
+import { ItemMenu } from '../Sidebar/ItemMenu';
 
 interface SceneTreeItemProps {
   item: Object3D | Light;
@@ -57,6 +57,7 @@ export function SceneTreeItem({ item, selected }: SceneTreeItemProps) {
       </div>
       
       <ItemMenu item={item} />
+      
     </div>
   );
 }

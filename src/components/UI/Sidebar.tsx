@@ -2,7 +2,7 @@ import { Grip } from 'lucide-react';
 import { useStore } from '../../store/editorStore';
 import { ObjectProperties } from './Sidebar/ObjectProperties';
 import { LightProperties } from './Sidebar/LightProperties';
-import { SceneTree } from './Sidebar/SceneTree';
+import { SceneTree } from './SceneTree/SceneTree';
 
 export function Sidebar() {
   const objects = useStore((state) => state.objects);

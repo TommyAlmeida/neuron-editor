@@ -13,10 +13,10 @@ import {
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
 import { useStore } from '../../../store/editorStore';
-import { SceneTreeItem } from './SceneTreeItem';
-import { SceneTreeGroup } from './SceneTreeGroup';
 import { FolderPlus } from 'lucide-react';
 import { useCallback } from 'react';
+import { SceneTreeGroup } from './SceneTreeGroup';
+import { SceneTreeItem } from './SceneTreeItem';
 
 export function SceneTree() {
   const {

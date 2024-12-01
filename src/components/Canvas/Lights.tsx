@@ -3,9 +3,10 @@ import { useRef } from 'react';
 import { Object3D } from 'three';
 import { TransformControls } from '@react-three/drei';
 import { LightGizmo } from './LightGizmo';
+import { Vector3D } from '../../types/math';
 
 export function Lights() {
-  const { lights, selectedId, updateLight } = useStore();
+  const { lights, selectedId, updateLight, gizmoMode } = useStore();
   const lightRefs = useRef<{ [key: string]: Object3D | null }>({});
 
   return (
@@ -15,7 +16,9 @@ export function Lights() {
           const lightObj = lightRefs.current[light.id];
           if (lightObj) {
             const position = lightObj.position.toArray();
-            updateLight(light.id, { position: position as [number, number, number] });
+            const rotation = lightObj.rotation.toArray();
+
+            updateLight(light.id, { position: position as Vector3D , rotation: rotation as Vector3D });
           }
         };
 
@@ -27,6 +30,7 @@ export function Lights() {
                   key={light.id}
                   intensity={light.intensity}
                   color={light.color}
+                  rotation={light.rotation}
                 />
               );
             case 'point':
@@ -35,6 +39,7 @@ export function Lights() {
                   ref={(ref) => {
                     lightRefs.current[light.id] = ref;
                   }}
+                  rotation={light.rotation}
                   position={light.position}
                   intensity={light.intensity}
                   color={light.color}
@@ -48,6 +53,7 @@ export function Lights() {
                     lightRefs.current[light.id] = ref;
                   }}
                   position={light.position}
+                  rotation={light.rotation}
                   intensity={light.intensity}
                   color={light.color}
                   castShadow
@@ -66,7 +72,7 @@ export function Lights() {
               <TransformControls
                 //@ts-expect-error ddd
                 object={lightRefs.current[light.id]}
-                mode="translate"
+                mode={gizmoMode}
                 onObjectChange={handleTransform}
               />
             )}

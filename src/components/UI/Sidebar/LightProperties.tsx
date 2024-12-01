@@ -32,6 +32,7 @@ export function LightProperties({ light, onUpdate }: LightPropertiesProps) {
             ))}
           </div>
         </div>
+
       )}
 
       <div>

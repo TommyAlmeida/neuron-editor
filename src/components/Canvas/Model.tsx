@@ -10,6 +10,7 @@ function Geometry({ object }: { object: Object3DType }) {
   const selectObject = useStore((state) => state.selectObject);
   const selectedId = useStore((state) => state.selectedId);
   const updateObject = useStore((state) => state.updateObject);
+  const { gizmoMode } = useStore((state) => state);
 
   const getMaterial = () => {
     const materialProps = {
@@ -75,7 +76,7 @@ function Geometry({ object }: { object: Object3DType }) {
         )}
         {selectedId === object.id && (
           // @ts-expect-error dunno
-          <TransformControls object={ref} onObjectChange={handleTransform} />
+          <TransformControls mode={gizmoMode} object={ref} onObjectChange={handleTransform} />
         )}
       </>
     </>

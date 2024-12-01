@@ -5,7 +5,7 @@ import { ChevronRight, ChevronDown, FolderOpen, Folder } from 'lucide-react';
 import { Group, Object3D, Light } from '../../../types/editor';
 import { SceneTreeItem } from './SceneTreeItem';
 import { useStore } from '../../../store/editorStore';
-import { ItemMenu } from './ItemMenu';
+import { ItemMenu } from '../Sidebar/ItemMenu';
 
 interface SceneTreeGroupProps {
   group: Group;

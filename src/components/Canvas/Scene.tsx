@@ -1,14 +1,13 @@
-import { OrbitControls, Grid, PerspectiveCamera, Environment, Effects } from '@react-three/drei';
+import { OrbitControls, Grid, PerspectiveCamera, Environment } from '@react-three/drei';
 import { useThree } from '@react-three/fiber';
 import { useEffect } from 'react';
 import { Model } from './Model';
 import { Lights } from './Lights';
 import { useStore } from '../../store/editorStore';
-import { SelectionOutline } from './SelectionOutline';
 
 export function Scene() {
   const { camera } = useThree();
-  const { settings, selectedId } = useStore();
+  const { settings } = useStore();
 
   useEffect(() => {
     camera.position.set(5, 5, 5);
@@ -19,8 +18,10 @@ export function Scene() {
     <>
       <PerspectiveCamera makeDefault position={[5, 5, 5]} />
       <OrbitControls makeDefault />
-      <color attach="background" args={[settings.theme === 'dark' ? '#1a1a1a' : '#f3f4f6']} />
+      <color attach="background" args={['#0f0f0f']} />
+
       <Lights />
+
       {settings.gridEnabled && (
         <Grid
           infiniteGrid
@@ -34,11 +35,10 @@ export function Scene() {
           sectionColor={settings.theme === 'dark' ? '#606060' : '#999999'}
         />
       )}
+
       <Model />
-      <Environment preset="forest" background backgroundBlurriness={0.5} />
-      <Effects>
-        <SelectionOutline selectedId={selectedId} />
-      </Effects>
+
+      <Environment preset="forest" background={false} blur={0.5} />
     </>
   );
 }

@@ -14,10 +14,11 @@ import {
   Cone,
   Square,
   Upload,
+  Video,
 } from 'lucide-react';
 import { useStore } from '../../store/editorStore';
 import { GeometryType, LightType } from '../../types/editor';
-import { SettingsPanel } from './SettingsPanel';
+import { SettingsPanel } from './Panels/SettingsPanel';
 import { useState } from 'react';
 import { ToolbarButton } from '../Toolbar/ToolbarButton';
 import { ToolbarDivider } from '../Toolbar/ToolbarDivider';
@@ -38,7 +39,7 @@ export function Toolbar() {
 
   return (
     <>
-      <div className="absolute top-2 left-2 bg-neutral-900 rounded-md shadow-lg p-1.5 flex flex-col z-50">
+      <div className="absolute top-4 left-2 bg-neutral-900 rounded-md shadow-lg p-1.5 flex flex-col z-50">
         <ToolbarButton active={gizmoMode === 'translate'} icon={<Move3D className={baseIconClass} />} onClick={() => { setGizmoMode('translate') }} title={'Translate'} />
         <ToolbarButton active={gizmoMode === 'rotate'} icon={<Rotate3D className={baseIconClass} />} onClick={() => { setGizmoMode('rotate') }} title={'Rotate'} />
         <ToolbarButton active={gizmoMode === 'scale'} icon={<Scale3D className={baseIconClass} />} onClick={() => { setGizmoMode('scale') }} title={'Scale'} />
@@ -64,6 +65,10 @@ export function Toolbar() {
 
         <ToolbarButton icon={<Camera className={baseIconClass} />} onClick={() => { updateSettings({ snapToGrid: !settings.snapToGrid }) }}
           title={'Toggle Snap to Grid'}
+        />
+
+        <ToolbarButton icon={<Video className={baseIconClass} />} onClick={() => { updateSettings({ timelineEnabled: !settings.timelineEnabled }) }}
+          title={'Toggle Animation Timeline'}
         />
 
         <ToolbarDivider />

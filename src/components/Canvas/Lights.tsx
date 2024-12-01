@@ -1,89 +1,104 @@
 import { useStore } from '../../store/editorStore';
-import { useRef } from 'react';
+import { useCallback, useRef } from 'react';
 import { Object3D } from 'three';
 import { SpotLight, TransformControls, useDepthBuffer } from '@react-three/drei';
 import { LightGizmo } from './LightGizmo';
 import { Vector3D } from '../../types/math';
+import { Light } from '../../types/editor';
+
+interface LightComponentProps {
+  light: Light;
+  lightRef: (ref: Object3D | null) => void;
+  selected: boolean;
+  depthBuffer: any;
+}
+
+const LightComponent = ({ light, lightRef, selected, depthBuffer }: LightComponentProps) => {
+  switch (light.type) {
+    case 'ambient':
+      return (
+        <ambientLight
+          intensity={light.intensity}
+          color={light.color}
+          castShadow
+        />
+      );
+    case 'point':
+      return (
+        <pointLight
+          ref={lightRef}
+          position={light.position}
+          intensity={light.intensity}
+          color={light.color}
+          castShadow
+          shadow-mapSize-width={2048}
+          shadow-mapSize-height={2048}
+        />
+      );
+    case 'spot':
+      return (
+        <SpotLight
+          ref={lightRef}
+          position={light.position}
+          angle={0.5}
+          distance={10}
+          attenuation={5}
+          anglePower={light.intensity}
+          penumbra={0.5}
+          intensity={2}
+          volumetric={true}
+          color={light.color}
+          castShadow
+          shadow-mapSize-width={2048}
+          shadow-mapSize-height={2048}
+          shadow-bias={-0.0001}
+          depthBuffer={depthBuffer}
+          debug={selected}
+        />
+      );
+    default:
+      return null;
+  }
+};
 
 export function Lights() {
   const { lights, selectedId, updateLight, gizmoMode } = useStore();
   const lightRefs = useRef<{ [key: string]: Object3D | null }>({});
+  const depthBuffer = useDepthBuffer({ size: 512 });
 
-  const depthBuffer = useDepthBuffer({ size: 256 });
+  const handleTransform = useCallback((lightId: string) => {
+    const lightObj = lightRefs.current[lightId];
+    if (lightObj) {
+      const position = lightObj.position.toArray();
+      updateLight(lightId, { position: position as Vector3D });
+    }
+  }, [updateLight]);
+
+  const setLightRef = useCallback((id: string) => (ref: Object3D | null) => {
+    lightRefs.current[id] = ref;
+  }, []);
 
   return (
     <>
-      {lights.map((light) => {
-        const handleTransform = () => {
-          const lightObj = lightRefs.current[light.id];
-
-          if (lightObj) {
-            const position = lightObj.position.toArray();
-            
-
-            updateLight(light.id, { position: position as Vector3D });
-          }
-        };
-
-        const renderLight = () => {
-          switch (light.type) {
-            case 'ambient':
-              return (
-                <ambientLight
-                  key={light.id}
-                  intensity={light.intensity}
-                  color={light.color}
-                />
-              );
-            case 'point':
-              return (
-                <pointLight
-                  ref={(ref) => {
-                    lightRefs.current[light.id] = ref;
-                  }}
-                  position={light.position}
-                  intensity={light.intensity}
-                  color={light.color}
-                  castShadow
-                />
-              );
-            case 'spot':
-              return (
-                <SpotLight
-                  ref={(ref) => {
-                    lightRefs.current[light.id] = ref;
-                  }}
-                
-                  position={light.position}
-                  angle={0.5}
-                  anglePower={light.intensity}
-                  penumbra={0.5}
-                  volumetric={true}
-                  color={light.color}
-                  depthBuffer={depthBuffer}
-                  debug={selectedId === light.id}
-                />
-              );
-            default:
-              return null;
-          }
-        };
-
-        return (
-          <group key={light.id}>
-            {renderLight()}
-            <LightGizmo light={light} selected={selectedId === light.id} />
-            {selectedId === light.id && (
-              <TransformControls
-                //@ts-expect-error NO CLUE, YET?
-                object={lightRefs.current[light.id]}
-                mode={gizmoMode}
-                onObjectChange={handleTransform}
-              />
-            )}
-          </group>
-        );
-      })}
+      {lights.map((light) => (
+        <group key={light.id}>
+          <LightComponent
+            light={light}
+            lightRef={setLightRef(light.id)}
+            selected={selectedId === light.id}
+            depthBuffer={depthBuffer}
+          />
+          <LightGizmo light={light} selected={selectedId === light.id} />
+          {selectedId === light.id && (
+            <TransformControls
+              // @ts-ignore
+              object={lightRefs.current[light.id]}
+              mode={gizmoMode}
+              onObjectChange={() => handleTransform(light.id)}
+            />
+          )}
+        </group>
+      ))}
     </>
   );
 }

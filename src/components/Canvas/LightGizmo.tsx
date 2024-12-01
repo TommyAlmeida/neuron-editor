@@ -1,4 +1,4 @@
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useMemo } from 'react';
 import { Html } from '@react-three/drei';
 import { Vector3 } from 'three';
 import { Light } from '../../types/editor';
@@ -8,6 +8,12 @@ interface LightGizmoProps {
   light: Light;
   selected: boolean;
 }
+
+const iconMap = {
+  ambient: Disc,
+  point: Lightbulb,
+  spot: Cone,
+} as const;
 
 export function LightGizmo({ light, selected }: LightGizmoProps) {
   const lineRef = useRef<any>();
@@ -22,39 +28,31 @@ export function LightGizmo({ light, selected }: LightGizmoProps) {
     }
   }, [light.position, light.type]);
 
-  const renderIcon = () => {
-    switch (light.type) {
-      case 'ambient':
-        return <Disc size={32} color={light.color} />;
-      case 'point':
-        return <Lightbulb size={32} color={light.color} />;
-      case 'spot':
-        return <Cone className='-rotate-45' size={32} color={light.color} />;
-      default:
-        return null;
-    }
-  };
+  const IconComponent = iconMap[light.type];
+
+  const containerStyle = useMemo(() => ({
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: selected ? 'rgba(255, 255, 255, 0.8)' : 'rgba(0, 0, 0, 0.5)',
+    borderRadius: '50%',
+    padding: '0.5rem',
+    width: '40px',
+    height: '40px',
+    boxShadow: selected ? '0px 0px 10px rgba(255, 255, 255, 0.8)' : 'none',
+  }), [selected]);
+
+  if (!IconComponent) return null;
 
   return (
-    <group>
-      {/* Icon */}
-      <Html position={light.position} center>
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            backgroundColor: selected ? 'rgba(255, 255, 255, 0.8)' : 'rgba(0, 0, 0, 0.5)',
-            borderRadius: '50%',
-            padding: '0.5rem',
-            width: '40px',
-            height: '40px',
-            boxShadow: selected ? '0px 0px 10px rgba(255, 255, 255, 0.8)' : 'none',
-          }}
-        >
-          {renderIcon()}
-        </div>
-      </Html>
-    </group>
+    <Html position={light.position} center>
+      <div style={containerStyle}>
+        <IconComponent 
+          size={32} 
+          color={light.color} 
+          className={light.type === 'spot' ? '-rotate-45' : ''} 
+        />
+      </div>
+    </Html>
   );
 }

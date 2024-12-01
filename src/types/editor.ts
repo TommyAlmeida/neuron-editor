@@ -29,6 +29,7 @@ export interface EditorSettings {
   gridSize: number;
   snapToGrid: boolean;
   snapValue: number;
+  timelineEnabled: boolean;
 }
 
 export interface Light extends SceneItem {

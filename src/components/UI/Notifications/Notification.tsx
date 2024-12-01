@@ -1,3 +1,4 @@
+import { motion } from 'framer-motion';
 import React, { useEffect } from 'react';
 
 interface NotificationProps {
@@ -23,8 +24,13 @@ export const Notification: React.FC<NotificationProps> = ({ id, message, type, o
   }, [id, onRemove]);
 
   return (
-    <div className={`bg-neutral-800 shadow-xl border p-4 rounded text-white ${notificationStyles[type]} mb-2`}>
-      <span>{message}</span>
-    </div>
+    <motion.div
+      initial={{ opacity: 0, y: -50 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -50 }}
+      className={`bg-neutral-950 shadow-xl border-b-2 p-4 rounded ${notificationStyles[type]} mb-2`}>
+      
+      <span className='text-white'>{message}</span>
+    </motion.div>
   );
 };

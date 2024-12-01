@@ -1,7 +1,9 @@
 import { useStore } from '../../store/editorStore';
-import { ObjectProperties } from './Sidebar/ObjectProperties';
-import { LightProperties } from './Sidebar/LightProperties';
 import { SceneTree } from './SceneTree/SceneTree';
+import { EditorObject } from '../../types/editor';
+import { Light } from '../../types/editor';
+import { ObjectProperties } from './Properties/Panels/ObjectProperties';
+import { LightProperties } from './Properties/Panels/LightProperties';
 
 export function Sidebar() {
   const objects = useStore((state) => state.objects);
@@ -14,7 +16,7 @@ export function Sidebar() {
   const selectedLight = lights.find((light) => light.id === selectedId);
 
   return (
-    <div className="absolute top-2 right-2 h-[80vh] rounded-md w-64 bg-neutral-900 border-r-gray-500 shadow-lg p-4 flex flex-col z-50">
+    <div className="absolute top-4 right-2 h-[80vh] rounded-md w-64 bg-neutral-900 border-r-gray-500 shadow-lg p-4 flex flex-col z-50">
       <SceneTree />
 
       {(selectedObject || selectedLight) && (
@@ -23,13 +25,13 @@ export function Sidebar() {
           {selectedObject && (
             <ObjectProperties
               object={selectedObject}
-              onUpdate={(updates) => updateObject(selectedObject.id, updates)}
+              onUpdate={(updates: Partial<EditorObject>) => updateObject(selectedObject.id, updates)}
             />
           )}
           {selectedLight && (
             <LightProperties
               light={selectedLight}
-              onUpdate={(updates) => updateLight(selectedLight.id, updates)}
+              onUpdate={(updates: Partial<Light>) => updateLight(selectedLight.id, updates)}
             />
           )}
         </div>

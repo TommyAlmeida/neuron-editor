@@ -8,6 +8,7 @@ const DEFAULT_SETTINGS: EditorSettings = {
   gridSize: 1,
   snapToGrid: false,
   snapValue: 1,
+  timelineEnabled: false,
 };
 
 export const useStore = create<EditorState>((set, get) => ({
@@ -55,7 +56,7 @@ export const useStore = create<EditorState>((set, get) => ({
 
     set((state) => ({
       objects: [...state.objects, newObject],
-      selectedGeometry: null // Reset after adding
+      selectedGeometry: null
     }));
 
     get().addNotification({
@@ -72,7 +73,7 @@ export const useStore = create<EditorState>((set, get) => ({
       name: `${type.charAt(0).toUpperCase() + type.slice(1)} Light ${get().lights.length + 1}`,
       intensity: 1,
       color: '#ffffff',
-      position: [5, 5, 5] as Vector3D,
+      position: [0, 5, 0] as Vector3D,
       angle: 0,
       parentId: null,
     };

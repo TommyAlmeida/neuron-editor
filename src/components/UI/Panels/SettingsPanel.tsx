@@ -1,4 +1,4 @@
-import { useStore } from '../../store/editorStore';
+import { useStore } from '../../../store/editorStore';
 import { Sun, Moon, Grid, Move } from 'lucide-react';
 
 export function SettingsPanel({ isOpen }: { isOpen: boolean }) {

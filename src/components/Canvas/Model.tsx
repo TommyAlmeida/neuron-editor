@@ -59,14 +59,15 @@ function Geometry({ object }: GeometryProps) {
         return (
           <meshStandardMaterial
             {...commonProps}
+            shadowSide={2}
             metalness={object.material.metalness}
             roughness={object.material.roughness}
           />
         );
       case 'basic':
-        return <meshBasicMaterial {...commonProps} />;
+        return <meshBasicMaterial shadowSide={2} {...commonProps} />;
       case 'phong':
-        return <meshPhongMaterial {...commonProps} />;
+        return <meshPhongMaterial shadowSide={2} {...commonProps} />;
       case 'physical':
         return (
           <meshPhysicalMaterial

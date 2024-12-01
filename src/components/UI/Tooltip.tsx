@@ -7,7 +7,7 @@ interface TooltipProps {
 export function Tooltip({ content, position = 'top', children }: TooltipProps) {
     const positionClasses = {
         top: 'bottom-full mb-2',
-        right: 'left-full ml-2',
+        right: 'left-full top-2 ml-2',
         bottom: 'top-full mt-2',
         left: 'right-full mr-2',
     };

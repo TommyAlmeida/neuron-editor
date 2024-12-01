@@ -1,13 +1,18 @@
-import { OrbitControls, Grid, PerspectiveCamera, Environment, GizmoHelper, } from '@react-three/drei';
+import { OrbitControls, Grid, PerspectiveCamera, Environment, } from '@react-three/drei';
 import { useThree } from '@react-three/fiber';
 import { useEffect } from 'react';
 import { Model } from './Model';
 import { Lights } from './Lights';
 import { useStore } from '../../store/editorStore';
+import { useAnimationFrame } from '../../hooks/useAnimationFrame';
+import { useKeyboardShortcuts } from '../../hooks/useKeyboardShortcuts';
 
 export function Scene() {
   const { camera } = useThree();
   const { settings } = useStore();
+
+  useAnimationFrame();
+  useKeyboardShortcuts();
 
   useEffect(() => {
     camera.position.set(5, 5, 5);
@@ -16,30 +21,28 @@ export function Scene() {
 
   return (
     <>
+      <color attach="background" args={['#242626']} />
       <PerspectiveCamera makeDefault position={[5, 5, 5]} />
       <OrbitControls makeDefault />
 
-      <Lights />
       {settings.gridEnabled && (
         <Grid
-        infiniteGrid
-        fadeDistance={50}
-        fadeStrength={5}
-        cellSize={settings.gridSize}
-        sectionSize={settings.gridSize * 5}
-        cellThickness={0.5}
-        sectionThickness={1}
-        cellColor={settings.theme === 'dark' ? '#404040' : '#cccccc'}
-        sectionColor={settings.theme === 'dark' ? '#606060' : '#999999'}
+          infiniteGrid
+          fadeDistance={50}
+          fadeStrength={5}
+          cellSize={settings.gridSize}
+          sectionSize={settings.gridSize * 5}
+          cellThickness={0.5}
+          sectionThickness={1}
+          cellColor={settings.theme === 'dark' ? '#404040' : '#cccccc'}
+          sectionColor={settings.theme === 'dark' ? '#606060' : '#999999'}
         />
       )}
-      
+
+      <Lights />
+      <Model />
       <Environment preset="forest" background={false} blur={0.5} />
 
-      <Model />
-      <GizmoHelper alignment="bottom-left" />
-      <color attach="background" args={['#242626']} />
-     
     </>
   );
 }

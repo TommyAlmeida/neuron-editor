@@ -1,24 +1,27 @@
-// components/Canvas/Model.tsx
-import { useEffect, useRef } from 'react';
-import { MaterialType, Object3D as Object3DType } from '../../types/editor';
+import { useEffect, useRef, useCallback } from 'react';
+import { EditorObject } from '../../types/editor';
 import { useStore } from '../../store/editorStore';
 import { TransformControls } from '@react-three/drei';
 import { Mesh, Group } from 'three';
 import { ThreeEvent } from '@react-three/fiber';
 import { Vector3D } from '../../types/math';
 
-function Geometry({ object }: { object: Object3DType }) {
+interface GeometryProps {
+  object: EditorObject;
+}
+
+function Geometry({ object }: GeometryProps) {
   const meshRef = useRef<Mesh>(null);
   const groupRef = useRef<Group>(null);
 
-  const { selectObject, selectedId, updateObject, gizmoMode } = useStore();
+  const { selectObject, selectedId, updateObject, gizmoMode, deleteObject } = useStore();
 
-  const handleClick = (e: ThreeEvent<MouseEvent>) => {
+  const handleClick = useCallback((e: ThreeEvent<MouseEvent>) => {
     e.stopPropagation();
     selectObject(object.id);
-  };
+  }, [object.id, selectObject]);
 
-  const handleTransform = () => {
+  const handleTransform = useCallback(() => {
     if (meshRef.current) {
       const position = meshRef.current.position.toArray();
       const rotation = meshRef.current.rotation.toArray().slice(0, 3);
@@ -29,51 +32,54 @@ function Geometry({ object }: { object: Object3DType }) {
         scale: scale as Vector3D,
       });
     }
-  };
+  }, [object.id, updateObject]);
 
-  const renderBasedOnMaterial = (material: MaterialType) => {
-    switch (material) {
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.key === 'Delete' || e.key === 'Backspace') && selectedId === object.id) {
+        deleteObject(selectedId);
+        selectObject(null);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [selectedId, selectObject, deleteObject, object.id]);
+
+  const renderMaterial = useCallback(() => {
+    const commonProps = {
+      color: object.material.color,
+      wireframe: object.material.wireframe,
+      transparent: object.material.transparent,
+      opacity: object.material.opacity,
+    };
+
+    switch (object.material.type) {
       case 'standard':
         return (
           <meshStandardMaterial
-            color={object.material.color}
+            {...commonProps}
             metalness={object.material.metalness}
             roughness={object.material.roughness}
-            wireframe={object.material.wireframe}
-            transparent={object.material.transparent}
           />
         );
       case 'basic':
-        return (
-          <meshBasicMaterial
-         
-            color={object.material.color}
-            wireframe={object.material.wireframe}
-            transparent={object.material.transparent}
-          />
-        );
+        return <meshBasicMaterial {...commonProps} />;
       case 'phong':
-        return (
-          <meshPhongMaterial
-            color={object.material.color}
-            wireframe={object.material.wireframe}
-            transparent={object.material.transparent}
-          />
-        );
+        return <meshPhongMaterial {...commonProps} />;
       case 'physical':
         return (
           <meshPhysicalMaterial
-          shadowSide={2}
-            color={object.material.color}
+            {...commonProps}
             metalness={object.material.metalness}
             roughness={object.material.roughness}
-            wireframe={object.material.wireframe}
+            shadowSide={2}
           />
         );
       default:
         return null;
     }
-  }
+  }, [object.material]);
 
   return (
     <group ref={groupRef} onClick={handleClick}>
@@ -89,11 +95,12 @@ function Geometry({ object }: { object: Object3DType }) {
         {object.type === 'box' && <boxGeometry />}
         {object.type === 'sphere' && <sphereGeometry />}
         {object.type === 'cylinder' && <cylinderGeometry />}
-        {renderBasedOnMaterial(object.material.type)}
+        {object.type === 'plane' && <planeGeometry />}
+        {renderMaterial()}
       </mesh>
       {selectedId === object.id && (
         <TransformControls
-          // @ts-ignore
+        // @ts-ignore
           object={meshRef.current}
           mode={gizmoMode}
           onObjectChange={handleTransform}
@@ -116,12 +123,14 @@ export function Model() {
     }
   }, [selectedGeometry, addObject, selectObject]);
 
+  const handleSceneClick = useCallback((e: ThreeEvent<MouseEvent>) => {
+    if (e.target === e.currentTarget) {
+      selectObject(null);
+    }
+  }, [selectObject]);
+
   return (
-    <group onClick={(e) => {
-      if (e.target === e.currentTarget) {
-        selectObject(null);
-      }
-    }}>
+    <group onClick={handleSceneClick}>
       {objects.map((object) => (
         <Geometry key={object.id} object={object} />
       ))}

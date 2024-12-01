@@ -1,15 +1,15 @@
-import { Object3D } from "../../../../types/editor";
+import { EditorObject } from "../../../../types/editor";
 
 interface MaterialTypeSelectorProps {
-    currentType: Object3D['material']['type'];
-    onChange: (type: Object3D['material']['type']) => void;
+    currentType: EditorObject['material']['type'];
+    onChange: (type: EditorObject['material']['type']) => void;
 }
 
 export const MaterialTypeSelector: React.FC<MaterialTypeSelectorProps> = ({ currentType, onChange }) => {
     return (
         <select
             value={currentType}
-            onChange={(e) => onChange(e.target.value as Object3D['material']['type'])}
+            onChange={(e) => onChange(e.target.value as EditorObject['material']['type'])}
             className="block w-full outline-none p-2.5 border-none rounded-lg text-sm text-gray-400 bg-neutral-800"
         >
             <option value="standard">Standard</option>

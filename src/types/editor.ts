@@ -6,6 +6,12 @@ export type LightType = 'ambient' | 'point' | 'spot';
 export type Theme = 'light' | 'dark';
 export type SaveType = 'file' | 'cache';
 
+export interface EditorNotification {
+  id?: string;
+  message: string;
+  type: 'success' | 'error' | 'info';
+}
+
 export interface SceneItem {
   id: string;
   parentId: string | null;
@@ -34,7 +40,7 @@ export interface Light extends SceneItem {
   angle: number;
 }
 
-export interface Object3D extends SceneItem {
+export interface EditorObject extends SceneItem {
   type: GeometryType;
   name: string;
   position: Vector3D;
@@ -55,7 +61,7 @@ export interface Object3D extends SceneItem {
 export type GizmoMode = 'translate' | 'rotate' | 'scale';
 
 export interface EditorState {
-  objects: Object3D[];
+  objects: EditorObject[];
   lights: Light[];
   selectedId: string | null;
   selectedGeometry: GeometryType | null;
@@ -67,8 +73,8 @@ export interface EditorState {
   addObject: (type: GeometryType) => void;
   addLight: (type: LightType) => void;
   selectObject: (id: string | null) => void;
-  updateObject: (id: string, updates: Partial<Object3D>) => void;
-  updateObjects: (objects: Partial<Object3D[]>) => void;
+  updateObject: (id: string, updates: Partial<EditorObject>) => void;
+  updateObjects: (objects: Partial<EditorObject[]>) => void;
   updateLight: (id: string, updates: Partial<Light>) => void;
   updateLights: (lights: Partial<Light[]>) => void;
   updateSettings: (settings: Partial<EditorSettings>) => void;
@@ -80,6 +86,11 @@ export interface EditorState {
   updateGroup: (id: string, updates: Partial<Group>) => void;
   deleteGroup: (id: string) => void;
   moveItem: (itemId: string, parentId: string | null) => void;
+
+  notifications: EditorNotification[];
+  
+  addNotification: (notification: EditorNotification) => void;
+  removeNotification: (id: string) => void;
 
   save: (type: SaveType) => void;
   load: (type: SaveType) => void;

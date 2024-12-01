@@ -1,18 +1,18 @@
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import { Object3D, Light } from '../../../types/editor';
+import { EditorObject, Light } from '../../../types/editor';
 import { useStore } from '../../../store/editorStore';
 import { Box, Lightbulb } from 'lucide-react';
 import { ItemMenu } from '../Sidebar/ItemMenu';
 import { useRef, useState } from 'react';
 
 interface SceneTreeItemProps {
-  item: Object3D | Light;
+  item: EditorObject | Light;
   selected: boolean;
 }
 
 interface SceneTreeItemProps {
-  item: Object3D | Light;
+  item: EditorObject | Light;
   selected: boolean;
 }
 

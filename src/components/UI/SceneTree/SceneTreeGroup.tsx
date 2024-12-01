@@ -2,14 +2,14 @@ import { useState } from 'react';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { ChevronRight, ChevronDown, FolderOpen, Folder } from 'lucide-react';
-import { Group, Object3D, Light } from '../../../types/editor';
+import { Group, EditorObject, Light } from '../../../types/editor';
 import { SceneTreeItem } from './SceneTreeItem';
 import { useStore } from '../../../store/editorStore';
 import { ItemMenu } from '../Sidebar/ItemMenu';
 
 interface SceneTreeGroupProps {
   group: Group;
-  items: (Object3D | Light)[];
+  items: (EditorObject | Light)[];
   selected: boolean;
 }
 

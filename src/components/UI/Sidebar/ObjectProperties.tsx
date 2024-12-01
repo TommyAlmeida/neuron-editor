@@ -1,4 +1,4 @@
-import { Object3D } from '../../../types/editor';
+import { EditorObject } from '../../../types/editor';
 import { AxisInput } from '../Properties/Inputs/AxisInput';
 import { Checkbox } from '../Properties/Inputs/Checkbox';
 import { ColorPicker } from '../Properties/Inputs/ColorPickerSelector';
@@ -7,8 +7,8 @@ import { Slider } from '../Properties/Inputs/Slider';
 
 
 interface ObjectPropertiesProps {
-  object: Object3D;
-  onUpdate: (updates: Partial<Object3D>) => void;
+  object: EditorObject;
+  onUpdate: (updates: Partial<EditorObject>) => void;
 }
 
 export function ObjectProperties({ object, onUpdate }: ObjectPropertiesProps) {
@@ -30,7 +30,7 @@ export function ObjectProperties({ object, onUpdate }: ObjectPropertiesProps) {
     onUpdate({ scale });
   };
 
-  const handleMaterialChange = (updates: Partial<Object3D['material']>) => {
+  const handleMaterialChange = (updates: Partial<EditorObject['material']>) => {
     onUpdate({
       material: {
         ...object.material,

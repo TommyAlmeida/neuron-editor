@@ -8,10 +8,10 @@ import {
 } from 'lucide-react';
 import { useStore } from "../../../store/editorStore";
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
-import { Group, Light, Object3D } from "../../../types/editor";
+import { Group, Light, EditorObject } from "../../../types/editor";
 
 interface ItemMenuProps {
-    item: Object3D | Light | Group;
+    item: EditorObject | Light | Group;
 }
 
 export function ItemMenu({ item }: ItemMenuProps) {

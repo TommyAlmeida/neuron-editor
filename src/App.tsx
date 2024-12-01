@@ -3,13 +3,15 @@ import { Scene } from './components/Canvas/Scene';
 import { Toolbar } from './components/UI/Toolbar';
 import { Sidebar } from './components/UI/Sidebar';
 import { useStore } from './store/editorStore';
+import { NotificationContainer } from './components/UI/Notifications/NotificationContainer';
 
 export default function App() {
   const { settings } = useStore();
 
   return (
     <div className={`w-full h-screen ${settings.theme === 'dark' ? 'dark' : ''}`}>
-      <Canvas 
+      <NotificationContainer/>      
+      <Canvas
         shadows
         dpr={[1, 1.5]}
         gl={{ preserveDrawingBuffer: true }}
@@ -17,9 +19,7 @@ export default function App() {
       >
         <Scene />
       </Canvas>
-   
-        <Sidebar />
-      
+      <Sidebar />
       <Toolbar />
     </div>
   );

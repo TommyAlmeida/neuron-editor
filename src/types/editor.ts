@@ -1,7 +1,8 @@
 import { Vector3D } from "./math";
 
-export type GeometryType = 'box' | 'sphere' | 'cylinder';
-export type LightType = 'ambient' | 'directional' | 'point' | 'spot';
+export type GeometryType = 'box' | 'sphere' | 'cylinder' | 'plane';
+export type MaterialType = 'standard' | 'basic' | 'phong' | 'physical';
+export type LightType = 'ambient' | 'point' | 'spot';
 export type Theme = 'light' | 'dark';
 
 export interface SceneItem {
@@ -29,18 +30,18 @@ export interface Light extends SceneItem {
   intensity: number;
   color: string;
   position: Vector3D;
-  rotation: Vector3D;
+  angle: number;
 }
 
 export interface Object3D extends SceneItem {
-  type: 'box' | 'sphere' | 'cylinder';
+  type: GeometryType;
   name: string;
   position: Vector3D;
   rotation: Vector3D;
   scale: Vector3D;
   color: string;
   material: {
-    type: 'standard' | 'basic' | 'phong' | 'normal' | 'physical';
+    type: MaterialType;
     metalness?: number;
     roughness?: number;
     wireframe?: boolean;

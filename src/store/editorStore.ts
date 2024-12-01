@@ -53,7 +53,7 @@ export const useStore = create<EditorState>((set) => ({
       intensity: 1,
       color: '#ffffff',
       position: [5, 5, 5],
-      rotation: [0, 0, 0],
+      angle: 0,
       parentId: null,
     };
     return { lights: [...state.lights, newLight] };

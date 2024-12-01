@@ -12,42 +12,19 @@ import {
   Rotate3D,
   Scale3D,
   Cone,
-  LampDesk,
+  Square,
 } from 'lucide-react';
 import { useStore } from '../../store/editorStore';
 import { GeometryType, LightType } from '../../types/editor';
 import { SettingsPanel } from './SettingsPanel';
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import { ToolbarButton } from '../Toolbar/ToolbarButton';
 import { ToolbarDivider } from '../Toolbar/ToolbarDivider';
 
 export function Toolbar() {
   const { setGeometry, addLight, settings, updateSettings, setGizmoMode, gizmoMode } = useStore();
   const [isSettingsOpen, setSettingsOpen] = useState(false);
-  const [isDragging, setIsDragging] = useState(false);
-  const [position, setPosition] = useState({ x: 0, y: 0 });
-  const startPosition = useRef({ x: 0, y: 0 });
-  const toolbarRef = useRef<HTMLDivElement>(null);
 
-
-  const handleMouseDown = (e: React.MouseEvent) => {
-    setIsDragging(true);
-    startPosition.current = { x: e.clientX - position.x, y: e.clientY - position.y };
-  };
-
-  const handleMouseMove = (e: MouseEvent) => {
-    if (isDragging) {
-      setPosition({
-        x: e.clientX - startPosition.current.x,
-        y: e.clientY - startPosition.current.y,
-      });
-    }
-  };
-
-  const handleMouseUp = () => {
-    setIsDragging(false);
-  };
-  
   const addShape = (type: GeometryType) => {
     setGeometry(type);
   };
@@ -69,14 +46,14 @@ export function Toolbar() {
 
         <ToolbarButton icon={<Box className={baseIconClass} />} onClick={() => { addShape('box') }} title={'Add Cube'} />
         <ToolbarButton icon={<Circle className={baseIconClass} />} onClick={() => { addShape('sphere') }} title={'Add Sphere'} />
+        <ToolbarButton icon={<Square className={baseIconClass} />} onClick={() => { addShape('plane') }} title={'Add Plane'} />
         <ToolbarButton icon={<Cylinder className={baseIconClass} />} onClick={() => { addShape('cylinder') }} title={'Add Cylinder'} />
 
         <ToolbarDivider />
 
         <ToolbarButton icon={<Sun className={baseIconClass} />} onClick={() => { handleAddLight('ambient') }} title={'Add Ambient Light'} />
         <ToolbarButton icon={<Lightbulb className={baseIconClass} />} onClick={() => { handleAddLight('point') }} title={'Add Point Light'} />
-        <ToolbarButton icon={<LampDesk className={baseIconClass} />} onClick={() => { handleAddLight("spot") }} title={'Add Spot Light'} />
-        <ToolbarButton icon={<Cone className={`${baseIconClass} -rotate-45`} />} onClick={() => { handleAddLight("directional") }} title={'Add Directional Light'} />
+        <ToolbarButton icon={<Cone className={`${baseIconClass} -rotate-45`} />} onClick={() => { handleAddLight("spot") }} title={'Add Spot Light'} />
 
         <ToolbarDivider />
 

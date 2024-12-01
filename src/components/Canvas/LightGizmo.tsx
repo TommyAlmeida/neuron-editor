@@ -1,8 +1,8 @@
 import { useRef, useEffect } from 'react';
-import { Line, Html } from '@react-three/drei';
+import { Line, Html, useDepthBuffer } from '@react-three/drei';
 import { Vector3 } from 'three';
 import { Light } from '../../types/editor';
-import { Sun, Lightbulb, Disc } from 'lucide-react';
+import { Lightbulb, Disc, Cone } from 'lucide-react';
 
 interface LightGizmoProps {
   light: Light;
@@ -13,7 +13,7 @@ export function LightGizmo({ light, selected }: LightGizmoProps) {
   const lineRef = useRef<any>();
 
   useEffect(() => {
-    if (light.type === 'directional' && lineRef.current) {
+    if (light.type === 'spot' && lineRef.current) {
       const points = [
         new Vector3(...light.position),
         new Vector3(light.position[0], light.position[1] - 2, light.position[2]),
@@ -28,8 +28,8 @@ export function LightGizmo({ light, selected }: LightGizmoProps) {
         return <Disc size={32} color={light.color} />;
       case 'point':
         return <Lightbulb size={32} color={light.color} />;
-      case 'directional':
-        return <Sun size={32} color={light.color} />;
+      case 'spot':
+        return <Cone className='-rotate-45' size={32} color={light.color} />;
       default:
         return null;
     }
@@ -56,14 +56,13 @@ export function LightGizmo({ light, selected }: LightGizmoProps) {
         </div>
       </Html>
 
-      {/* Directional light line */}
-      {light.type === 'directional' && (
+      {light.type === 'spot' && (
         <>
           <Line
             ref={lineRef}
             points={[
-              light.position,
-              [light.position[0], light.position[1] - 2, light.position[2]],
+              light.angle,
+              [light.angle + Math.PI /2, light.position[1] - 2, light.position[2]],
             ]}
             color={light.color}
             lineWidth={2}

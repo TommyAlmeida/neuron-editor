@@ -1,4 +1,4 @@
-import { OrbitControls, Grid, PerspectiveCamera, Environment } from '@react-three/drei';
+import { OrbitControls, Grid, PerspectiveCamera, Environment, GizmoHelper } from '@react-three/drei';
 import { useThree } from '@react-three/fiber';
 import { useEffect } from 'react';
 import { Model } from './Model';
@@ -37,6 +37,7 @@ export function Scene() {
       <Environment preset="forest" background={false} blur={0.5} />
 
       <Model />
+      <GizmoHelper alignment="bottom-left" />
       <color attach="background" args={['#242626']} />
     </>
   );

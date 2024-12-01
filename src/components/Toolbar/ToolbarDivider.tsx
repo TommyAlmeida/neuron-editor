@@ -1,3 +1,3 @@
 export function ToolbarDivider() {
-    return <div className="w-px bg-gray-200 dark:bg-gray-700 mx-2" />;
+    return <div className="h-px bg-neutral-700 my-2" />;
 }

@@ -1,23 +1,23 @@
 import { memo, useCallback } from "react";
-import { EditorObject } from "../../../../types/editor";
 import { Vector3D } from "../../../../types/math";
 import { AxisInput } from "../Inputs/AxisInput";
 import { MaterialProperties } from "./MaterialProperties";
+import {SceneObject} from "../../../../types/scene.ts";
 
 interface ObjectPropertiesProps {
-  object: EditorObject;
-  onUpdate: (updates: Partial<EditorObject>) => void;
+  object: SceneObject;
+  onUpdate: (updates: Partial<SceneObject>) => void;
 }
 
 export const ObjectProperties = memo(({ object, onUpdate }: ObjectPropertiesProps) => {
-  const updateVector = useCallback((property: keyof Pick<EditorObject, 'position' | 'rotation' | 'scale'>) =>
+  const updateVector = useCallback((property: keyof Pick<SceneObject, 'position' | 'rotation' | 'scale'>) =>
     (axis: 'x' | 'y' | 'z', value: number) => {
       const values = [...object[property]] as Vector3D;
       values['xyz'.indexOf(axis)] = value;
       onUpdate({ [property]: values });
     }, [object, onUpdate]);
 
-  const handleMaterialChange = useCallback((updates: Partial<EditorObject['material']>) => {
+  const handleMaterialChange = useCallback((updates: Partial<SceneObject['material']>) => {
     onUpdate({
       material: {
         ...object.material,

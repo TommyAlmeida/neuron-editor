@@ -1,8 +1,8 @@
-import { useStore } from '../../../store/editorStore';
+import { useEditorStore } from '../../../store/editorStore';
 import { Sun, Moon, Grid, Move } from 'lucide-react';
 
 export function SettingsPanel({ isOpen }: { isOpen: boolean }) {
-  const { settings, updateSettings } = useStore();
+  const { settings, updateSettings } = useEditorStore();
 
   if (!isOpen) return null;
 

@@ -1,16 +1,16 @@
 import { memo } from 'react';
-import { EditorObject } from "../../../../types/editor";
 import { ColorPicker } from "../Inputs/ColorPickerSelector";
 import { MaterialTypeSelector } from "../Inputs/MaterialTypeSelector";
 import { Slider } from "../Inputs/Slider";
 import { Checkbox } from '../Inputs/Checkbox';
+import {SceneObject} from "../../../../types/scene.ts";
 
 export const MaterialProperties = memo(({
     material,
     onMaterialChange
 }: {
-    material: EditorObject['material'],
-    onMaterialChange: (updates: Partial<EditorObject['material']>) => void
+    material: SceneObject['material'],
+    onMaterialChange: (updates: Partial<SceneObject['material']>) => void
 }) => (
     <div className="space-y-4">
         <MaterialTypeSelector

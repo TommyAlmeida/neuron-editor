@@ -1,20 +1,20 @@
 import { useEffect, useRef, useCallback } from 'react';
-import { EditorObject } from '../../types/editor';
-import { useStore } from '../../store/editorStore';
+import { useEditorStore } from '../../store/editorStore';
 import { TransformControls } from '@react-three/drei';
 import { Mesh, Group } from 'three';
 import { ThreeEvent } from '@react-three/fiber';
 import { Vector3D } from '../../types/math';
+import {SceneObject} from "../../types/scene.ts";
 
 interface GeometryProps {
-  object: EditorObject;
+  object: SceneObject;
 }
 
 function Geometry({ object }: GeometryProps) {
   const meshRef = useRef<Mesh>(null);
   const groupRef = useRef<Group>(null);
 
-  const { selectObject, selectedId, updateObject, gizmoMode, deleteObject } = useStore();
+  const { selectObject, selectedId, updateObject, gizmoMode, deleteObject } = useEditorStore();
 
   const handleClick = useCallback((e: ThreeEvent<MouseEvent>) => {
     e.stopPropagation();
@@ -112,10 +112,10 @@ function Geometry({ object }: GeometryProps) {
 }
 
 export function Model() {
-  const objects = useStore((state) => state.objects);
-  const selectedGeometry = useStore((state) => state.selectedGeometry);
-  const addObject = useStore((state) => state.addObject);
-  const selectObject = useStore((state) => state.selectObject);
+  const objects = useEditorStore((state) => state.objects);
+  const selectedGeometry = useEditorStore((state) => state.selectedGeometry);
+  const addObject = useEditorStore((state) => state.addObject);
+  const selectObject = useEditorStore((state) => state.selectObject);
 
   useEffect(() => {
     if (selectedGeometry) {

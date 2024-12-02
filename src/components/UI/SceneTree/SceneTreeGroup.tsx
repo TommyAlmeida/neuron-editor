@@ -2,19 +2,20 @@ import { useState } from 'react';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { ChevronRight, ChevronDown, FolderOpen, Folder } from 'lucide-react';
-import { Group, EditorObject, Light } from '../../../types/editor';
+import { Group } from '../../../types/editor';
 import { SceneTreeItem } from './SceneTreeItem';
-import { useStore } from '../../../store/editorStore';
+import { useEditorStore } from '../../../store/editorStore';
 import { ItemMenu } from '../Sidebar/ItemMenu';
+import {Light, SceneObject} from "../../../types/scene.ts";
 
 interface SceneTreeGroupProps {
   group: Group;
-  items: (EditorObject | Light)[];
+  items: (SceneObject | Light)[];
   selected: boolean;
 }
 
 export function SceneTreeGroup({ group, items, selected }: SceneTreeGroupProps) {
-  const { updateGroup, selectedId } = useStore();
+  const { updateGroup, selectedId } = useEditorStore();
   const [isOpen, setIsOpen] = useState(group.isOpen);
 
   const {

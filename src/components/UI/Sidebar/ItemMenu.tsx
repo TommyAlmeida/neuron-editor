@@ -6,12 +6,13 @@ import {
     FolderPlus,
     FolderMinus
 } from 'lucide-react';
-import { useStore } from "../../../store/editorStore";
+import { useEditorStore } from "../../../store/editorStore";
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
-import { Group, Light, EditorObject } from "../../../types/editor";
+import { Group } from "../../../types/editor";
+import {Light, SceneObject} from "../../../types/scene.ts";
 
 interface ItemMenuProps {
-    item: EditorObject | Light | Group;
+    item: SceneObject | Light | Group;
 }
 
 export function ItemMenu({ item }: ItemMenuProps) {
@@ -22,7 +23,7 @@ export function ItemMenu({ item }: ItemMenuProps) {
         updateLight,
         groups,
         moveItem
-    } = useStore();
+    } = useEditorStore();
 
     const [isRenaming, setIsRenaming] = useState(false);
     const [newName, setNewName] = useState(item.name);

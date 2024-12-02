@@ -16,7 +16,7 @@ import {
   restrictToVerticalAxis,
   restrictToParentElement
 } from '@dnd-kit/modifiers';
-import { useStore } from '../../../store/editorStore';
+import { useEditorStore } from '../../../store/editorStore';
 import { FolderPlus } from 'lucide-react';
 import { useCallback } from 'react';
 import { SceneTreeGroup } from './SceneTreeGroup';
@@ -30,7 +30,7 @@ export function SceneTree() {
     selectedId,
     moveItem,
     addGroup,
-  } = useStore();
+  } = useEditorStore();
 
   const sensors = useSensors(
     useSensor(PointerSensor),

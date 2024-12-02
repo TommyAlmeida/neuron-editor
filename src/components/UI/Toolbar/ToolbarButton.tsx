@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react';
-import { Tooltip } from "../UI/Tooltip";
+import { Tooltip } from "../Tooltip.tsx";
 
 interface ToolbarButtonProps {
   icon: React.ReactNode;

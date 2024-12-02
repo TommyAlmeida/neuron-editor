@@ -1,10 +1,11 @@
-import { useStore } from '../../store/editorStore';
+import { useEditorStore } from '../../store/editorStore';
 import { useCallback, useRef } from 'react';
 import { Object3D } from 'three';
 import { SpotLight, TransformControls, useDepthBuffer } from '@react-three/drei';
 import { LightGizmo } from './LightGizmo';
 import { Vector3D } from '../../types/math';
-import { Light } from '../../types/editor';
+
+import {Light} from "../../types/scene.ts";
 
 interface LightComponentProps {
   light: Light;
@@ -62,7 +63,7 @@ const LightComponent = ({ light, lightRef, selected, depthBuffer }: LightCompone
 };
 
 export function Lights() {
-  const { lights, selectedId, updateLight, gizmoMode } = useStore();
+  const { lights, selectedId, updateLight, gizmoMode } = useEditorStore();
   const lightRefs = useRef<{ [key: string]: Object3D | null }>({});
   const depthBuffer = useDepthBuffer({ size: 512 });
 

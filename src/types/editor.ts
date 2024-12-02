@@ -1,21 +1,9 @@
-import { Vector3D } from "./math";
+import {GeometryType, Light, SceneObject} from "./scene.ts";
+import {EditorNotification} from "./notification.ts";
 
-export type GeometryType = 'box' | 'sphere' | 'cylinder' | 'plane';
-export type MaterialType = 'standard' | 'basic' | 'phong' | 'physical';
 export type LightType = 'ambient' | 'point' | 'spot';
 export type Theme = 'light' | 'dark';
 export type SaveType = 'file' | 'cache';
-
-export interface EditorNotification {
-  id?: string;
-  message: string;
-  type: 'success' | 'error' | 'info';
-}
-
-export interface SceneItem {
-  id: string;
-  parentId: string | null;
-}
 
 export interface Group {
   id: string;
@@ -29,40 +17,12 @@ export interface EditorSettings {
   gridSize: number;
   snapToGrid: boolean;
   snapValue: number;
-  timelineEnabled: boolean;
-}
-
-export interface Light extends SceneItem {
-  type: LightType;
-  name: string;
-  intensity: number;
-  color: string;
-  position: Vector3D;
-  angle: number;
-}
-
-export interface EditorObject extends SceneItem {
-  type: GeometryType;
-  name: string;
-  position: Vector3D;
-  rotation: Vector3D;
-  scale: Vector3D;
-  color: string;
-  material: {
-    type: MaterialType;
-    metalness?: number;
-    roughness?: number;
-    wireframe?: boolean;
-    color: string,
-    transparent: boolean,
-    opacity: number,
-  };
 }
 
 export type GizmoMode = 'translate' | 'rotate' | 'scale';
 
 export interface EditorState {
-  objects: EditorObject[];
+  objects: SceneObject[];
   lights: Light[];
   selectedId: string | null;
   selectedGeometry: GeometryType | null;
@@ -74,8 +34,8 @@ export interface EditorState {
   addObject: (type: GeometryType) => void;
   addLight: (type: LightType) => void;
   selectObject: (id: string | null) => void;
-  updateObject: (id: string, updates: Partial<EditorObject>) => void;
-  updateObjects: (objects: Partial<EditorObject[]>) => void;
+  updateObject: (id: string, updates: Partial<SceneObject>) => void;
+  updateObjects: (objects: Partial<SceneObject[]>) => void;
   updateLight: (id: string, updates: Partial<Light>) => void;
   updateLights: (lights: Partial<Light[]>) => void;
   updateSettings: (settings: Partial<EditorSettings>) => void;

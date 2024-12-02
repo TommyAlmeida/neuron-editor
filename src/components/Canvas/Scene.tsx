@@ -1,17 +1,15 @@
-import { OrbitControls, Grid, PerspectiveCamera, Environment, } from '@react-three/drei';
+import {OrbitControls, Grid, PerspectiveCamera, Environment, GizmoHelper, GizmoViewport,} from '@react-three/drei';
 import { useThree } from '@react-three/fiber';
 import { useEffect } from 'react';
-import { Model } from './Model';
-import { Lights } from './Lights';
-import { useStore } from '../../store/editorStore';
-import { useAnimationFrame } from '../../hooks/useAnimationFrame';
+import { useEditorStore } from '../../store/editorStore';
 import { useKeyboardShortcuts } from '../../hooks/useKeyboardShortcuts';
+import {Lights} from "./Lights";
+import {Model} from "./Model";
 
 export function Scene() {
   const { camera } = useThree();
-  const { settings } = useStore();
+  const { settings } = useEditorStore();
 
-  useAnimationFrame();
   useKeyboardShortcuts();
 
   useEffect(() => {
@@ -41,8 +39,14 @@ export function Scene() {
 
       <Lights />
       <Model />
+      <fogExp2 attach="fog" color="white" density={0.1}/>
       <Environment preset="forest" background={false} blur={0.5} />
-
+      <GizmoHelper alignment="bottom-left" margin={[80, 80]}>
+          <GizmoViewport
+              axisColors={['#ff3653', '#0adb50', '#2c8fdf']}
+              labelColor="black"
+          />
+      </GizmoHelper>
     </>
   );
 }

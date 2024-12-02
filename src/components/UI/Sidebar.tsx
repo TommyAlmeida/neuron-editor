@@ -1,16 +1,15 @@
-import { useStore } from '../../store/editorStore';
+import { useEditorStore } from '../../store/editorStore';
 import { SceneTree } from './SceneTree/SceneTree';
-import { EditorObject } from '../../types/editor';
-import { Light } from '../../types/editor';
 import { ObjectProperties } from './Properties/Panels/ObjectProperties';
 import { LightProperties } from './Properties/Panels/LightProperties';
+import {Light, SceneObject} from "../../types/scene.ts";
 
 export function Sidebar() {
-  const objects = useStore((state) => state.objects);
-  const lights = useStore((state) => state.lights);
-  const selectedId = useStore((state) => state.selectedId);
-  const updateObject = useStore((state) => state.updateObject);
-  const updateLight = useStore((state) => state.updateLight);
+  const objects = useEditorStore((state) => state.objects);
+  const lights = useEditorStore((state) => state.lights);
+  const selectedId = useEditorStore((state) => state.selectedId);
+  const updateObject = useEditorStore((state) => state.updateObject);
+  const updateLight = useEditorStore((state) => state.updateLight);
 
   const selectedObject = objects.find((obj) => obj.id === selectedId);
   const selectedLight = lights.find((light) => light.id === selectedId);
@@ -25,7 +24,7 @@ export function Sidebar() {
           {selectedObject && (
             <ObjectProperties
               object={selectedObject}
-              onUpdate={(updates: Partial<EditorObject>) => updateObject(selectedObject.id, updates)}
+              onUpdate={(updates: Partial<SceneObject>) => updateObject(selectedObject.id, updates)}
             />
           )}
           {selectedLight && (

@@ -1,8 +1,8 @@
 import { useRef, useEffect, useMemo } from 'react';
 import { Html } from '@react-three/drei';
 import { Vector3 } from 'three';
-import { Light } from '../../types/editor';
 import { Lightbulb, Disc, Cone } from 'lucide-react';
+import {Light} from "../../types/scene.ts";
 
 interface LightGizmoProps {
   light: Light;

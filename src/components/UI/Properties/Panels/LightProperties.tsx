@@ -1,8 +1,8 @@
 import { memo, useCallback } from "react";
-import { Light } from "../../../../types/editor";
 import { Vector3D } from "../../../../types/math";
 import { AxisInput } from "../Inputs/AxisInput";
 import { Slider } from "../Inputs/Slider";
+import {Light} from "../../../../types/scene.ts";
 
 interface LightPropertiesProps {
   light: Light;

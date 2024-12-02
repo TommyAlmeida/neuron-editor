@@ -1,23 +1,23 @@
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import { EditorObject, Light } from '../../../types/editor';
-import { useStore } from '../../../store/editorStore';
+import { useEditorStore } from '../../../store/editorStore';
 import { Box, Lightbulb } from 'lucide-react';
 import { ItemMenu } from '../Sidebar/ItemMenu';
 import { useRef, useState } from 'react';
+import {Light, SceneObject} from "../../../types/scene.ts";
 
 interface SceneTreeItemProps {
-  item: EditorObject | Light;
+  item: SceneObject | Light;
   selected: boolean;
 }
 
 interface SceneTreeItemProps {
-  item: EditorObject | Light;
+  item: SceneObject | Light;
   selected: boolean;
 }
 
 export function SceneTreeItem({ item, selected }: SceneTreeItemProps) {
-  const { selectObject } = useStore();
+  const { selectObject } = useEditorStore();
   const [isDragging, setIsDragging] = useState(false);
   const moveThreshold = useRef(5);
   const startPos = useRef<{ x: number; y: number } | null>(null);

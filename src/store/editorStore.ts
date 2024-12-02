@@ -1,6 +1,8 @@
 import { create } from 'zustand';
-import { EditorState, EditorSettings, EditorNotification, GeometryType, MaterialType, Light, EditorObject } from '../types/editor';
+import { EditorState, EditorSettings } from '../types/editor';
 import { Vector3D } from '../types/math';
+import {GeometryType, Light, MaterialType, SceneObject} from "../types/scene.ts";
+import {EditorNotification} from "../types/notification.ts";
 
 const DEFAULT_SETTINGS: EditorSettings = {
   theme: 'light',
@@ -8,10 +10,9 @@ const DEFAULT_SETTINGS: EditorSettings = {
   gridSize: 1,
   snapToGrid: false,
   snapValue: 1,
-  timelineEnabled: false,
 };
 
-export const useStore = create<EditorState>((set, get) => ({
+export const useEditorStore = create<EditorState>((set, get) => ({
   objects: [],
   lights: [],
   gizmoMode: 'translate',
@@ -34,7 +35,7 @@ export const useStore = create<EditorState>((set, get) => ({
       return;
     }
 
-    const newObject: EditorObject = {
+    const newObject: SceneObject = {
       id: crypto.randomUUID(),
       type,
       name: `${type.charAt(0).toUpperCase() + type.slice(1)} ${state.objects.length + 1}`,

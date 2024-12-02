@@ -1,10 +1,10 @@
 import { useEffect } from "react";
 import { useHistoryStore } from "../store/historyStore";
-import { useStore } from "../store/editorStore";
+import { useEditorStore } from "../store/editorStore";
 
 export const useKeyboardShortcuts = () => {
     const { undo, redo } = useHistoryStore();
-    const {deleteObject} = useStore();
+    const {deleteObject} = useEditorStore();
     
     useEffect(() => {
       const handleKeyDown = (e: KeyboardEvent) => {

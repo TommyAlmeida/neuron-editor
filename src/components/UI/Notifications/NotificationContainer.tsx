@@ -1,10 +1,10 @@
 import React from 'react';
-import { EditorNotification } from '../../../types/editor';
-import { useStore } from '../../../store/editorStore';
+import { useEditorStore } from '../../../store/editorStore';
 import { Notification } from './Notification';
+import {EditorNotification} from "../../../types/notification.ts";
 
 export const NotificationContainer: React.FC = () => {
-  const { notifications, removeNotification } = useStore();
+  const { notifications, removeNotification } = useEditorStore();
 
   console.log(notifications)
   return (

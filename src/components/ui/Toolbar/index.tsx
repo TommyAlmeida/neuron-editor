@@ -1,4 +1,4 @@
-import { Box, Cone, Cylinder, Import, Move3D, Rotate3D, Save, Scale3D, Torus } from "lucide-react"
+import { Box, Cone, Cylinder, DotIcon, Import, Lightbulb, Move3D, Rotate3D, Save, Scale3D, Torus } from "lucide-react"
 import { useSceneStore } from "../../../store/useSceneStore";
 import { GeometryType } from "../../../types/geometry";
 import { useEditorStore } from "../../../store/useEditorStore";
@@ -44,8 +44,18 @@ export const Toolbar = () => {
         },
         {
             icon: <Cone className="w-4 h-4 text-sm -rotate-45" />,
+            title: 'Directional Light',
+            onClick: () => { addLight("directional") },
+        },
+        {
+            icon: <Lightbulb className="w-4 h-4 text-sm -rotate-45" />,
             title: 'SpotLight',
             onClick: () => { addLight("spot") },
+        },
+        {
+            icon: <DotIcon className="w-4 h-4 text-sm -rotate-45" />,
+            title: 'Point Light',
+            onClick: () => { addLight("point") },
         },
         {
             icon: <Save className="w-4 h-4 text-sm" />,

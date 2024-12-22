@@ -2,6 +2,7 @@ import { Environment, GizmoHelper, GizmoViewport, OrbitControls, PerspectiveCame
 import { Ground } from "./scene-items/Ground";
 import { SceneObjects } from "./containers/SceneObjects";
 import { SceneLights } from "./containers/SceneLights";
+import { LightMixer } from "./scene-items/LightMixer";
 
 export function Scene() {
     return (
@@ -9,7 +10,11 @@ export function Scene() {
             <group position-y={-0.5}>
                 <PerspectiveCamera makeDefault position={[5, 5, 5]} />
                 <OrbitControls makeDefault />
-                <Environment preset="night" blur={0.5} />
+                <Environment
+                    preset="warehouse"
+                    background={false}
+                    blur={0.8}
+                />
 
                 <hemisphereLight color={'#ffffff'} intensity={0.5} />
                 <directionalLight castShadow intensity={0.8} position={[100, 100, 100]} />
@@ -19,10 +24,14 @@ export function Scene() {
 
                 <Ground />
 
+                <LightMixer />
+
                 <Stars />
                 <Sky rayleigh={3.14} sunPosition={[100, -100, 100]} />
 
                 <Stats />
+
+                <fog attach="fog" args={['#202020', 5, 20]} />
 
                 <GizmoHelper alignment="bottom-left" margin={[80, 80]}>
                     <GizmoViewport

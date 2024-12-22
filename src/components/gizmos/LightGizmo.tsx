@@ -1,37 +1,85 @@
-import { Lightbulb, Cone } from "lucide-react";
+import { Html, Sphere } from "@react-three/drei";
 import { NeuronLight } from "../../types/light";
-import { Html } from "@react-three/drei";
-import { useMemo } from "react";
+import { useRef } from "react";
+import { useFrame } from "@react-three/fiber";
+import { Mesh } from "three";
+import { Cone, Globe2Icon, LightbulbIcon } from "lucide-react";
 
-const iconMap = {
-    point: Lightbulb,
-    spot: Cone,
-} as const;
 
-export const LightGizmo = ({ light, selected }: { light: NeuronLight, selected: boolean }) => {
-    const IconComponent = iconMap[light.type];
+interface LightGizmoProps {
+    light: NeuronLight;
+    selected: boolean;
+}
 
-    const containerStyle = useMemo(() => ({
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: selected ? 'rgba(255, 255, 255, 0.8)' : 'rgba(0, 0, 0, 0.5)',
-        borderRadius: '50%',
-        padding: '0.5rem',
-        width: '40px',
-        height: '40px',
-        boxShadow: selected ? '0px 0px 10px rgba(255, 255, 255, 0.8)' : 'none',
-    }), [selected]);
+export const LightGizmo = ({ light, selected }: LightGizmoProps) => {
+    const iconMap = {
+        point: <LightbulbIcon className="w-4 h-4" />,
+        spot: <Cone className="w-4 h-4" />,
+        directional: <Globe2Icon className="w-4 h-4" />
+    }
 
-    if (!IconComponent) return null;
+    const sphereRef = useRef<Mesh>(null);
 
-    return <Html position={light.position} center renderOrder={1}>
-        <div style={containerStyle}>
-            <IconComponent
-                size={32}
-                color={light.color}
-                className={light.type === 'spot' ? '-rotate-45' : ''}
-            />
-        </div>
-    </Html>
+    useFrame(({ clock }) => {
+        if (selected && sphereRef.current) {
+            const pulse = Math.sin(clock.getElapsedTime() * 3) * 0.1 + 1;
+            sphereRef.current.scale.setScalar(pulse);
+        }
+    });
+
+    const renderGizmoByType = () => {
+        switch (light.type) {
+            case "point":
+                return (
+                    <group>
+                        <Sphere ref={sphereRef} args={[0.2, 16, 16]}>
+                            <meshBasicMaterial
+                                color={light.color}
+                                transparent
+                                opacity={0.4}
+                            />
+                        </Sphere>
+                    </group>
+                );
+
+            case "spot":
+                return (
+                    <group>
+                        <Sphere ref={sphereRef} args={[0.2, 16, 16]}>
+                            <meshBasicMaterial
+                                color={light.color}
+                                transparent
+                                opacity={0.4}
+                            />
+                        </Sphere>
+                    </group>
+                );
+
+            case "directional":
+                return (
+                    <group>
+                        <Sphere ref={sphereRef} args={[0.2, 16, 16]}>
+                            <meshBasicMaterial
+                                color={light.color}
+                                transparent
+                                opacity={0.4}
+                            />
+                        </Sphere>
+                    </group>
+                );
+        }
+    };
+    
+    return (
+        <group position={light.position}>
+            {renderGizmoByType()}
+            {selected && (
+                <Html center>
+                    <div className="p-2 text-xs bg-black/75 text-white rounded-full">
+                        {iconMap[light.type]}
+                    </div>
+                </Html>
+            )}
+        </group>
+    );
 }

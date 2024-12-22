@@ -11,7 +11,7 @@ interface ColorInputProps {
 export function ColorInput({ label, value, onChange }: ColorInputProps) {
   return (
     <div className="space-y-2">
-      <Label>{label}</Label>
+      <Label className='text-white'>{label}</Label>
       <Popover>
         <PopoverTrigger asChild>
           <button

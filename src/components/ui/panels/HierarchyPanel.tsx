@@ -3,6 +3,7 @@ import { Box, Lightbulb } from "lucide-react";
 import { useSceneStore } from "../../../store/useSceneStore";
 import { TransformPanel } from "./TransformPanel";
 import { ScrollArea } from "../natives/scroll-area";
+import { LightPanel } from "./LightPanel";
 export function HierarchyPanel() {
     const { objects, lights, selectedObjectId, selectObject } = useSceneStore();
 
@@ -49,7 +50,9 @@ export function HierarchyPanel() {
             </Panel>
 
             {selectedObjectId && (
-                <TransformPanel onUpdate={() => { }} />
+                'intensity' in (allObjects.find(obj => obj.id === selectedObjectId) || {})
+                    ? <LightPanel />
+                    : <TransformPanel onUpdate={() => { }} />
             )}
         </div>
     )

@@ -5,14 +5,13 @@ import { useSceneStore } from "../../store/useSceneStore";
 import { Vector3d } from "../../types/geometry";
 import { Light } from "../scene-items/Light";
 import { useEditorStore } from "../../store/useEditorStore";
-import { LightGizmo } from "../gizmos/LightGizmo";
 
 export const SceneLights = () => {
     const { lights, selectedObjectId, updateLight } = useSceneStore();
     const { transformMode } = useEditorStore();
 
     const lightRefs = useRef<{ [key: string]: Object3D | null }>({});
-    const depthBuffer = useDepthBuffer({ size: 512 });
+    const depthBuffer = useDepthBuffer({ size: 2000 });
 
     const handleTransform = useCallback((lightId: string) => {
         const lightObj = lightRefs.current[lightId];
@@ -36,8 +35,6 @@ export const SceneLights = () => {
                     selected={selectedObjectId === light.id}
                     depthBuffer={depthBuffer}
                 />
-
-                <LightGizmo light={light} selected={selectedObjectId === light.id} />
 
                 {selectedObjectId === light.id && (
                     <TransformControls

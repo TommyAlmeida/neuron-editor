@@ -9,7 +9,7 @@ import { useEditorStore } from "../../store/useEditorStore";
 
 export function NeuronObjectGeometry({ object }: { object: NeuronObject }) {
     const { selectObject, selectedObjectId, removeObject, updateObject } = useSceneStore();
-    const { transformMode } = useEditorStore();
+    const { transformMode, setIsTransforming } = useEditorStore();
 
     const meshRef = useRef<Mesh>(null);
     const groupRef = useRef<Group>(null);
@@ -28,7 +28,7 @@ export function NeuronObjectGeometry({ object }: { object: NeuronObject }) {
             updateObject(object.id, {
                 position: position as Vector3d,
                 rotation: rotation as Vector3d,
-                scale: scale,
+                scale: scale as Vector3d,
             });
         }
     }, [object.id, updateObject]);
@@ -63,34 +63,39 @@ export function NeuronObjectGeometry({ object }: { object: NeuronObject }) {
                 return null
         }
     }
-    return <group ref={groupRef}>
-        <mesh
-            ref={meshRef}
-            position={object.position}
-            scale={object.scale}
-            castShadow
-            onClick={handleClick}
-            receiveShadow
-            onPointerOver={(e) => {
-                e.stopPropagation();
-                document.body.style.cursor = 'pointer';
-            }}
-            onPointerOut={(e) => {
-                e.stopPropagation();
-                document.body.style.cursor = 'default';
-            }}
-        >
-            {renderType()}
-            <meshPhongMaterial />
-            <Edges visible={selectedObjectId === object.id} color="#fff" />
-        </mesh>
+    
+    return (
+        <group ref={groupRef}>
+            <mesh
+                ref={meshRef}
+                position={object.position}
+                scale={object.scale}
+                castShadow
+                onClick={handleClick}
+                receiveShadow
+                onPointerOver={(e) => {
+                    e.stopPropagation();
+                    document.body.style.cursor = 'pointer';
+                }}
+                onPointerOut={(e) => {
+                    e.stopPropagation();
+                    document.body.style.cursor = 'default';
+                }}
+            >
+                {renderType()}
+                <meshPhongMaterial />
+                <Edges visible={selectedObjectId === object.id} color="#fff" />
+            </mesh>
 
-        {meshRef.current && selectedObjectId === object.id && (
-            <TransformControls
-                object={meshRef.current}
-                mode={transformMode}
-                onObjectChange={handleTransform}
-            />
-        )}
-    </group>
+            {meshRef.current && selectedObjectId === object.id && (
+                <TransformControls 
+                    object={meshRef.current} 
+                    mode={transformMode} 
+                    onMouseDown={() => setIsTransforming(true)}
+                    onMouseUp={() => setIsTransforming(false)}
+                    onChange={handleTransform}
+                />
+            )}
+        </group>
+    );
 }

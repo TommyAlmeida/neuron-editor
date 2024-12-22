@@ -1,11 +1,17 @@
 import { create } from "zustand"
 
+type TransformMode = "translate" | "rotate" | "scale"
+
 interface EditorState {
-    transformMode: "translate" | "rotate" | "scale"
-    setTransformMode: (mode: "translate" | "rotate" | "scale") => void
+    transformMode: TransformMode
+    setTransformMode: (mode: TransformMode) => void
+    isTransforming: boolean
+    setIsTransforming: (isTransforming: boolean) => void
 }
 
 export const useEditorStore = create<EditorState>((set) => ({
     transformMode: "translate",
-    setTransformMode: (mode) => set({ transformMode: mode })
+    isTransforming: false,
+    setTransformMode: (mode) => set({ transformMode: mode }),
+    setIsTransforming: (isTransforming) => set({ isTransforming })
 }))

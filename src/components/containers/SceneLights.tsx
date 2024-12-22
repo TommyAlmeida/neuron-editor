@@ -1,5 +1,5 @@
 import { TransformControls, useDepthBuffer } from "@react-three/drei";
-import { useCallback, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { Object3D } from "three";
 import { useSceneStore } from "../../store/useSceneStore";
 import { Vector3d } from "../../types/geometry";
@@ -11,7 +11,6 @@ export const SceneLights = () => {
     const { transformMode } = useEditorStore();
 
     const lightRefs = useRef<{ [key: string]: Object3D | null }>({});
-    const depthBuffer = useDepthBuffer({ size: 2000 });
 
     const handleTransform = useCallback((lightId: string) => {
         const lightObj = lightRefs.current[lightId];
@@ -25,7 +24,6 @@ export const SceneLights = () => {
         lightRefs.current[id] = ref;
     }, []);
 
-
     return lights.map((light) => {
         return (
             <group position-y={-0.5} key={light.id}>
@@ -33,7 +31,7 @@ export const SceneLights = () => {
                     light={light}
                     lightRef={setLightRef(light.id)}
                     selected={selectedObjectId === light.id}
-                    depthBuffer={depthBuffer}
+                    depthBuffer={null}
                 />
 
                 {selectedObjectId === light.id && (
